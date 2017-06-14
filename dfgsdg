@@ -59,7 +59,28 @@ KYM
          "</script>"}) 
 List<Blog> selectBlogs(@Param("list") int[] ids);
 
-
+------------------------------------
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{MM/dd/yyyy HH:mm:ss:SSSXXX} APPLICATION=BAM COMPONENT=BAM ENVIRONMENT=${spring.profiles.active} %X{MESSAGE_ID} %X{API_CONSUMER} %X{REQUEST_TYPE} LOGLEVEL=%-5p LOGGER=%F-%M LN=%L LOGMSG=%m%n" />
+		</layout>
+	</appender>
+	<logger name="com.americanexpress.serve.bam">
+		<level value="DEBUG" />
+	</logger>
+	<!-- Third-party loggers -->
+	<logger name="org.springframework">
+		<level value="DEBUG" />
+	</logger>
+	<root>
+		<priority value="DEBUG" />
+		<appender-ref ref="CONSOLE" />
+	</root>
+</log4j:configuration>
 
 
 
