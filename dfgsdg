@@ -48,7 +48,16 @@ EMAIL
 
 KYM
 
-
+@Select({"<script>",
+         "SELECT *", 
+         "FROM blog",
+         "WHERE id IN", 
+           "<foreach item='item' index='index' collection='list'",
+             "open='(' separator=',' close=')'>",
+             "#{item}",
+           "</foreach>",
+         "</script>"}) 
+List<Blog> selectBlogs(@Param("list") int[] ids);
 
 
 
