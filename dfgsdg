@@ -1,6 +1,6 @@
-Pincode:
-https://data.gov.in/catalog/locality-based-pincode
 
+https://data.gov.in/catalog/locality-based-pincode
+http://www.svnimaging.org/cooperative/
 Get generated Key:
 final String INSERT = "insert into posts (title,body,created_at,updated_at) values (#{title},#{body},#{createDate},#{updateDate})";
 
@@ -13,10 +13,13 @@ Set keyProperty as the Java variable name.
 Set keyColumn as the column name in the database.
 
 After insert, post.getId() will have your generated ID.
-
+------------------------------------------
+http://elizabetht.github.io/blog/2013/11/21/student-enrollment-using-mybatis-with-spring/
+-------------------------------------------
 
 MEMBERSHIP
 
+MEMBERSHIP_ID
 MEMBERSHIP_TYPE
 SALUTATION
 MEMBERSHIP_NAME
@@ -40,7 +43,11 @@ ADDRESS
 
 ADDRESS_LINE1
 ADDRESS_LINE2
+VILLAGE_LOC_NAME
+BO_SO_HO
+SUB_DISTRICT
 DISTRICT
+STATE
 PINCODE
 PHONE
 MOBILE_NUMBER
@@ -48,39 +55,22 @@ EMAIL
 
 KYM
 
-@Select({"<script>",
-         "SELECT *", 
-         "FROM blog",
-         "WHERE id IN", 
-           "<foreach item='item' index='index' collection='list'",
-             "open='(' separator=',' close=')'>",
-             "#{item}",
-           "</foreach>",
-         "</script>"}) 
-List<Blog> selectBlogs(@Param("list") int[] ids);
+ID_TYPE
+ISSUING_AUTHORITY
+ID_CARD_NUMBER
+DATE_OF_ISSUE
+DATE_OF_EXPIRY
+PAN_NUMBER
 
-------------------------------------
-<?xml version="1.0" encoding="UTF-8"?> 
-<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
-<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
-	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="%d{MM/dd/yyyy HH:mm:ss:SSSXXX} APPLICATION=BAM COMPONENT=BAM ENVIRONMENT=${spring.profiles.active} %X{MESSAGE_ID} %X{API_CONSUMER} %X{REQUEST_TYPE} LOGLEVEL=%-5p LOGGER=%F-%M LN=%L LOGMSG=%m%n" />
-		</layout>
-	</appender>
-	<logger name="com.americanexpress.serve.bam">
-		<level value="DEBUG" />
-	</logger>
-	<!-- Third-party loggers -->
-	<logger name="org.springframework">
-		<level value="DEBUG" />
-	</logger>
-	<root>
-		<priority value="DEBUG" />
-		<appender-ref ref="CONSOLE" />
-	</root>
-</log4j:configuration>
+
+Suday tables:
+INSERT INTO `PACS`.`BANK_DETAILS` (`BANK_CODE`, `BANK_NAME`, `MEMBERSHIP_PREFIX_CODE`, `IFSC_CODE`, `BANK_STATUS`) VALUES ( '89203' ,'OMERABAD PACS','C2546','C2546','4');
+
+INSERT INTO `PACS`.`BANK_ACCT_PREFIX` (`BANK_ID`, `SCHEME_TYPE_ID`, `PREFIX_CODE`, `ACCOUNT_COUNTER`) VALUES ( '','1' ,'06','');
+
+BANCODE-ACCTYPE-NUMBER 
+REAL LOAN ACC NUMBER - 89203 - 06 - 0092880
+MEMBERSHIP ID -  892030016392
 
 
 
