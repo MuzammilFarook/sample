@@ -1,0 +1,39 @@
+<html>
+<head>
+<title>PACS:Primary Agriculture Credit Society</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+</head>
+<body>
+<input type="button" id="btnSubmit" value="test">
+<script>
+    $(document).ready(function() {
+        $("#btnSubmit").click(function(){
+            // Your Twilio credentials
+            var SID = "AC408d77628ce4f4d3065723901e17d2b3"
+            var Key = "ee8e337670868e1bc0b069cad6897d7b"
+
+            $.ajax({
+                type: 'POST',
+                url: 'https://api.twilio.com/2010-04-01/Accounts/' + SID + '/Messages.json',
+                data: {
+                    "To" : "+919043875486",
+                    "From" : "+18589430324",
+                    "Body" : "PACS-உங்களுக்கு 1530.00 தொகை நிலுவையில் உள்ளது.விரைவில் திருப்பிச் செலுத்துக"
+                },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader ("Authorization", "Basic " + btoa(SID + ':' + Key));
+                },
+                success: function(data) {
+				alert("success");
+                    console.log(data);
+                },
+                error: function(data) {
+				alert("error");
+                    console.log(data);
+                }
+            });
+        });
+    });
+</script>
+</body>
+<html>
