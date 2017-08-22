@@ -70,7 +70,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     //Log instead of redirect for testing purposes
 jQuery(function($){
   $("button").click(function(){
-		alert("ullay po");alert($("#one").val());
 		var str = $.trim($("#one").val());
 		var jrpassword= 'admin123';
 		var emppassword= 'emp123';
@@ -79,7 +78,7 @@ jQuery(function($){
 	  }else if(str==emppassword){
       $.redirect("buttons.html","GET",null,null,true);
 	  }else {
-	  alert("veliye jao");
+	  alert("Password mismatch!");
 	  }
   });
 });
