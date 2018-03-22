@@ -1,2 +1,10 @@
 as
 https://bootsnipp.com/snippets/z8O1d
+
+1.model map for std
+2.ajax for sec based on std 
+2a)-> ajax for master fee fetch based on std
+3.ajax for stud
+3a)->ajax for stud master fee details population
+------------------
+4.On submit, persistence
