@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="description" content="muzammil" />
+<meta name="author" content="" />
+<link rel="icon" href="favicon.ico" />
+
+<title>Schools360</title>
+
+<!-- Bootstrap core CSS -->
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+<link th:href="@{css/style.css}" rel="stylesheet" />
+<link th:href="@{css/component.css}" rel="stylesheet" />
+<link th:href="@{css/style_grid.css}" rel="stylesheet" />
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<!-- JQuery -->
+<!--Import https://www.devbridge.com/sourcery/components/jquery-autocomplete/#-->
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+<script type="text/javascript" th:src="@{/js/jquery.autocomplete.js}"></script>
+<!-- Compiled and minified JavaScript -->
+<script type="text/javascript" th:src="@{/js/materialize.min.js}"></script>
+
+<!-- <script>
+	$(document).ready(function() {
+
+		$('#autocomplete-input').devbridgeAutocomplete({
+			serviceUrl : '/suggestion',
+			paramName : 'searchstr',
+			minChars : 1,
+			autoSelectFirst : true,
+			transformResult : function(response) {
+
+				return {
+					//must convert json to javascript object before process
+					suggestions : $.map($.parseJSON(response), function(item) {
+
+						return {
+							value : item.username
+						};
+					})
+
+				};
+
+			}
+
+		});
+
+	});
+</script> -->
+
+</head>
+
+<body>
+
+	<!-- banner -->
+	<div class="wthree_agile_admin_info">
+		<!-- /w3_agileits_top_nav-->
+		<!-- /nav-->
+		<div class="w3_agileits_top_nav">
+			<ul id="gn-menu" class="gn-menu-main">
+				<!-- /nav_agile_w3l -->
+				<li class="gn-trigger"><a class="gn-icon gn-icon-menu"><i class="fa fa-bars" aria-hidden="true"></i><span>Menu</span></a>
+					<nav class="gn-menu-wrapper">
+						<div class="gn-scroller scrollbar1">
+							<ul class="gn-menu agile_menu_drop">
+								<li><a href="main-page.html"> <i class="fa fa-tachometer"></i> Dashboard
+								</a></li>
+								<li><a href="#"><i class="fa fa-cogs" aria-hidden="true"></i> Cards <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+									<ul class="gn-submenu">
+										<li class="mini_list_agile"><a href="buttons.html"><i class="fa fa-caret-right" aria-hidden="true"></i> Order Cards</a></li>
+										<li class="mini_list_w3"><a href="grids.html"> <i class="fa fa-caret-right" aria-hidden="true"></i> Card Status
+										</a></li>
+									</ul></li>
+								<li><a href="#"> <i class="fa fa-file-text-o" aria-hidden="true"></i>Forms <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+									<ul class="gn-submenu">
+										<li class="mini_list_agile"><a href="input.html"><i class="fa fa-caret-right" aria-hidden="true"></i> Inputs</a></li>
+										<li class="mini_list_w3"><a href="validation.html"><i class="fa fa-caret-right" aria-hidden="true"></i> Validation</a></li>
+									</ul></li>
+								<li><a href="table.html"> <i class="fa fa-table" aria-hidden="true"></i> Tables
+								</a></li>
+								<li><a href="#"><i class="fa fa-list" aria-hidden="true"></i>Short Codes <i class="fa fa-angle-down" aria-hidden="true"> </i></a>
+									<ul class="gn-submenu">
+										<li class="mini_list_agile"><a href="typo.html"><i class="fa fa-caret-right" aria-hidden="true"></i> Typography</a></li>
+										<li class="mini_list_w3"><a href="icons.html"> <i class="fa fa-caret-right" aria-hidden="true"></i> Icons
+										</a></li>
+
+									</ul></li>
+
+								<li><a href="charts.html"> <i class="fa fa-line-chart" aria-hidden="true"></i> Charts
+								</a></li>
+								<li><a href="maps.html"><i class="fa fa-map-o" aria-hidden="true"></i> Maps</a></li>
+								<li class="page"><a href="#"><i class="fa fa-files-o" aria-hidden="true"></i> Pages <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+									<ul class="gn-submenu">
+
+										<li class="mini_list_agile"><a href="signin.html"> <i class="fa fa-caret-right" aria-hidden="true"></i> Sign In
+										</a></li>
+										<li class="mini_list_w3"><a href="signup.html"> <i class="fa fa-caret-right" aria-hidden="true"></i> Sign Up
+										</a></li>
+										<li class="mini_list_agile error"><a href="404.html"> <i class="fa fa-caret-right" aria-hidden="true"></i> Error 404
+										</a></li>
+
+										<li class="mini_list_w3_line"><a href="calendar.html"> <i class="fa fa-caret-right" aria-hidden="true"></i> Calendar
+										</a></li>
+									</ul></li>
+								<li><a href="#"> <i class="fa fa-suitcase" aria-hidden="true"></i>More <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+									<ul class="gn-submenu">
+										<li class="mini_list_agile"><a href="faq.html"> <i class="fa fa-caret-right" aria-hidden="true"></i> Faq
+										</a></li>
+										<li class="mini_list_w3"><a href="blank.html"> <i class="fa fa-caret-right" aria-hidden="true"></i> Blank Page
+										</a></li>
+									</ul></li>
+							</ul>
+						</div>
+						<!-- /gn-scroller -->
+					</nav></li>
+				<!-- //nav_agile_w3l -->
+				<li class="second logo"><h1>
+						<a href="main-page.html"><i class="fa fa-graduation-cap" aria-hidden="true"></i>Schools360 </a>
+					</h1></li>
+				<li class="second admin-pic">
+					<ul class="top_dp_agile">
+						<li class="dropdown profile_details_drop"><a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								<div class="profile_img">
+									<span class="prfil-img"><img src="images/admin.jpg" alt=""> </span>
+								</div>
+						</a>
+							<ul class="dropdown-menu drp-mnu">
+								<li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
+								<li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+								<li><a href="javascript: document.logoutForm.submit()"><i class="fa fa-sign-out"></i> Logout</a></li>
+							</ul></li>
+
+					</ul>
+				</li>
+
+				<li class="second full-screen">
+					<section class="full-top">
+						<button id="toggle">
+							<i class="fa fa-arrows-alt" aria-hidden="true"></i>
+						</button>
+					</section>
+				</li>
+
+			</ul>
+			<!-- //nav -->
+
+		</div>
+		<div class="clearfix"></div>
+		<!-- //w3_agileits_top_nav-->
+		<!-- /inner_content-->
+		<div class="inner_content">
+			<div class="container">
+				<br>
+				<div class="agile_info_shadow">
+					<div class="alert alert-info">
+						<h4>Collect Fee</h4>
+					</div>
+					<hr style="height: 1px; border: none; color: #333; background-color: #333;" />
+					<form autocomplete="off" th:action="@{/collectFee}" th:object="${collectFee}" method="post" class="m-t" role="form" data-toggle="validator">
+						<div th:if="${configureMasterFee}" class="alert alert-danger" role="alert" th:text="${configureMasterFee}"></div>
+
+						<div class="row">
+							<div class="col-md-4">
+								<!-- Name 
+								<div class="form-group">
+									<input type="text" id="autocomplete-input" placeholder="Name" class="form-control" />
+								</div>
+								<p>-----OR-----</p>-->
+								<div class="panel panel-primary">
+									<div class="panel-heading">
+										<h3 class="panel-title">Here you Go!</h3>
+
+									</div>
+									<div class="panel-body">
+										<div class="form-group">
+											<label for="std">Class</label> <select class="form-control" required="required" th:field="*{std}" name="std" id="std">
+												<option th:value="NA" selected="selected">-- select std --</option>
+												<option th:each="dropDownItem : ${standards}" th:value="${dropDownItem.key}" th:text="${dropDownItem.value}" />
+											</select>
+										</div>
+
+										<div class="form-group">
+											<label for="section">Sec</label> <select class="form-control" th:field="*{sec}" name="sec" id="sec" required="required">
+												<option th:value="NA" disabled="disabled" selected="selected">--select sec--</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label for="location">Name</label> <select class="form-control" th:field="*{studentId_Name}" name="studentId_Name" id="name" required="required">
+												<option th:value="NA" disabled="disabled" selected="selected">--select name --</option>
+											</select>
+										</div>
+
+										<div class="form-group">
+											<button id="populate" type="submit" name="action" value="Populate" class="btn btn-primary block full-width m-b">Submit</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8" th:if="${collectFee.feeType!=null}">
+								<div class="panel panel-primary">
+									<div class="panel-heading">
+										<h3 class="panel-title">Fee History</h3>
+
+									</div>
+									<div class="panel-body">
+										<table class="table table-sm">
+											<thead>
+												<tr class="table-secondary">
+													<th>Fee type</th>
+													<th>Total</th>
+													<th>Paid</th>
+													<th>Balance</th>
+													<th>Status</th>
+													<th>Collect Fee for</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>Admission</td>
+													<td th:text="${collectFee.admissionFeeTotal!= null} ? ${collectFee.admissionFeeTotal} : '0.00'"></td>
+													<td th:text="${collectFee.collectAdmissionFee!= null} ? ${collectFee.collectAdmissionFee.booksFee} : '0.00'"></td>
+													<td th:text="${collectFee.collectAdmissionFee!= null} ? ${collectFee.collectAdmissionFee.balance} : '0.00'"></td>
+													<td>0</td>
+													<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalForAdmission">Collect</button></td>
+
+												</tr>
+												<tr th:if="${collectFee.feeType=='T'}">
+													<td>Term 1</td>
+													<td th:text="${collectFee.termFee.term1}"></td>
+													<td th:text="${collectFee.collectTermFee!= null} ? ${collectFee.collectTermFee.term1} : '0.00'"></td>
+													<td th:text="${collectFee.collectTermFee!= null} ? ${collectFee.collectTermFee.term1Balance}:'0.00'"></td>
+													<td>0</td>
+													<td><button class="btn btn-primary" data-toggle="modal" data-target="#modalForTerm1">Collect</button></td>
+
+												</tr>
+												<tr th:if="${collectFee.feeType=='T'}">
+													<td>Term 2</td>
+													<td th:text="${collectFee.termFee.term2}"></td>
+													<td th:text="${collectFee.collectTermFee!= null} ? ${collectFee.collectTermFee.term2} : '0.00'"></td>
+													<td th:text="${collectFee.collectTermFee!= null} ? ${collectFee.collectTermFee.term2Balance}:'0.00'"></td>
+													<td>0</td>
+													<td><button class="btn btn-primary" data-toggle="modal" data-target="#myModalNorm2">Collect</button></td>
+												</tr>
+												<tr th:if="${collectFee.feeType=='T'}">
+													<td>Term 3</td>
+													<td th:text="${collectFee.termFee.term3}"></td>
+													<td th:text="${collectFee.collectTermFee!= null} ? ${collectFee.collectTermFee.term3} : '0.00'"></td>
+													<td th:text="${collectFee.collectTermFee!= null} ? ${collectFee.collectTermFee.term3Balance}:'0.00'"></td>
+													<td>0</td>
+													<td><button class="btn btn-primary" data-toggle="modal" data-target="#myModalNorm2">Collect</button></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<!-- Modal for admission -->
+								<div class="modal fade" id="modalForAdmission" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<!-- Modal Header -->
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">
+													<span aria-hidden="true">&times;</span> <span class="sr-only">Close</span>
+												</button>
+												<h4 class="modal-title" id="myModalLabel">Collect Admission Fee</h4>
+											</div>
+
+											<!-- Modal Body -->
+											<div class="modal-body">
+												<div class="form-group">
+													<label for="exampleInputEmail1">Email address</label> <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" />
+												</div>
+												<div class="form-group">
+													<label for="exampleInputPassword1">Password</label> <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
+												</div>
+												<div class="checkbox">
+													<label> <input type="checkbox" /> Check me out
+													</label>
+												</div>
+												<button type="submit" class="btn btn-default">Submit</button>
+											</div>
+											<!-- Modal Footer -->
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+												<button type="submit" name="action" value="Submit" class="btn btn-primary block full-width m-b">Submit</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- Modal for admission -->
+
+								<!-- Modal for term 1 -->
+								<div class="modal fade" id="modalForTerm1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<!-- Modal Header -->
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">
+													<span aria-hidden="true">&times;</span> <span class="sr-only">Close</span>
+												</button>
+												<h4 class="modal-title" id="myModalLabel">Collect Term Fee</h4>
+											</div>
+
+											<!-- Modal Body -->
+											<div class="modal-body">
+
+
+												<div class="form-group">
+													<label for="exampleInputEmail1">Email address</label> <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" />
+												</div>
+												<div class="form-group">
+													<label for="exampleInputPassword1">Password</label> <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
+												</div>
+												<div class="checkbox">
+													<label> <input type="checkbox" /> Check me out
+													</label>
+												</div>
+												<button type="submit" class="btn btn-default">Submit</button>
+
+
+
+											</div>
+
+											<!-- Modal Footer -->
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+												<button type="submit" value="Submit" class="btn btn-primary block full-width m-b">Submit</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- Modal for term 1 -->
+							</div>
+						</div>
+					</form>
+
+
+				</div>
+			</div>
+		</div>
+		<!-- //inner_content-->
+	</div>
+	<!-- banner -->
+	<form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+		<input hidden type="submit" value="Sign Out" />
+	</form>
+	<!--copy rights start here-->
+	<div class="copyrights">
+		© 2018 Schools360. All Rights Reserved | Design by <a href="http://epyloc.com/" target="_blank">epyloc</a>
+	</div>
+	<!--copy rights end here-->
+	<!-- js -->
+	<script th:src="@{js/classie.js}"></script>
+	<script th:src="@{js/gnmenu.js}"></script>
+	<script>
+		new gnMenu(document.getElementById('gn-menu'));
+	</script>
+	<script th:src="@{js/screenfull.js}"></script>
+
+	<script>
+		$(function() {
+			$('#supported').text('Supported/allowed: ' + !!screenfull.enabled);
+			if (!screenfull.enabled) {
+				return false;
+			}
+			$('#toggle').click(function() {
+				screenfull.toggle($('#container')[0]);
+			});
+		});
+	</script>
+	<script>
+		$('#std').change(
+				function() {
+					$('#sec').empty();
+					$('#name').empty();
+					$.getJSON("http://localhost:8080/getSecByStd", {
+						std : $(this).val(),
+						ajax : 'true'
+					}, function(data) {
+						var html = '<option value="">--Sec--</option>';
+						var len = data.length;
+						for (var i = 0; i < len; i++) {
+							html += '<option value="' + data[i] + '">'
+									+ data[i] + '</option>';
+						}
+						html += '</option>';
+						$('#sec').html(html);
+					});
+				});
+
+		$('#sec')
+				.change(
+						function() {
+							$
+									.getJSON(
+											"http://localhost:8080/getListOfStudentsByStdAndSec",
+											{
+												std : $('#std').val(),
+												sec : $(this).val(),
+												ajax : 'true'
+											},
+											function(data) {
+												var html = '<option value="">--Name--</option>';
+												var len = data.length;
+												for (var i = 0; i < len; i++) {
+													html += '<option value="' + data[i] + '">'
+															+ data[i]
+															+ '</option>';
+												}
+												html += '</option>';
+												$('#name').html(html);
+											});
+						});
+
+	/* 	$('#name').change(function() {
+			$.getJSON("http://localhost:8080/populateCollectFee", {
+				std : $('#std').val(),
+				sec : $('#sec').val(),
+				name : $(this).val(),
+				ajax : 'true'
+			}, function(data) {
+				$('#booksFee').val(data.collectAdmissionFee.booksFee)
+			});
+		}); */
+		
+	</script>
+	<script th:src="@{js/bars.js}"></script>
+	<script th:src="@{js/jquery.nicescroll.js}"></script>
+	<script th:src="@{js/scripts.js}"></script>
+
+	<!-- Bootstrap -->
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<!-- Bootstrap Validator plugin -->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
+</body>
+</html>
