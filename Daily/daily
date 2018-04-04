@@ -1,1 +1,63 @@
-afsasf
+MonthlyFee monthlyFee = monthlyFeeService.findByMasterFeeUniqueId(masterFeeConfig.getId());
+		collectFee.setMonthlyFee(monthlyFee);
+		BigDecimal monthlyFeeTotal = new BigDecimal(monthlyFee.getJanFee()).add(new BigDecimal(monthlyFee.getFebFee())).add(new BigDecimal(monthlyFee.getMarFee())).add(new BigDecimal(monthlyFee.getAprilFee()))
+				.add(new BigDecimal(monthlyFee.getMayFee())).add(new BigDecimal(monthlyFee.getJunFee())).add(new BigDecimal(monthlyFee.getJulFee())).add(new BigDecimal(monthlyFee.getAugFee()))
+				.add(new BigDecimal(monthlyFee.getSepFee())).add(new BigDecimal(monthlyFee.getOctFee())).add(new BigDecimal(monthlyFee.getNovFee())).add(new BigDecimal(monthlyFee.getDecFee()));
+		collectFee.setMonthlyFeeTotal(monthlyFeeTotal);
+
+		CollectMonthlyFee collectMonthlyFee = collectMonthlyFeeService.findBySchoolUniqueIdAndStdSecAndRollNo(schoolUniqueId, collectFee.getStd(), collectFee.getSec(), rollNo);
+
+		if (collectMonthlyFee != null) {
+			BigDecimal monthlyFeePaidTotal = collectMonthlyFee.getJanFee().add(collectMonthlyFee.getFebFee()).add(collectMonthlyFee.getMarFee()).add(collectMonthlyFee.getAprilFee())
+					.add(collectMonthlyFee.getMayFee()).add(collectMonthlyFee.getJunFee()).add(collectMonthlyFee.getJulFee()).add(collectMonthlyFee.getAugFee()).add(collectMonthlyFee.getSepFee())
+					.add(collectMonthlyFee.getOctFee()).add(collectMonthlyFee.getNovFee()).add(collectMonthlyFee.getDecFee());
+			collectFee.setMonthlyFeePaidTotal(monthlyFeePaidTotal);
+
+			collectFee.setCollectMonthlyFeeForm(new CollectMonthlyFeeForm());
+			// Populate how much they have to collect..
+			collectFee.getCollectMonthlyFeeForm().setBooksFee(collectMonthlyFee.getBooksFeeBalance());
+			collectFee.getCollectMonthlyFeeForm().setComputerFee(collectMonthlyFee.getComputerFeeBalance());
+			collectFee.getCollectMonthlyFeeForm().setExtraCurricularFee(collectMonthlyFee.getExtraCurricularFeeBalance());
+			collectFee.getCollectMonthlyFeeForm().setHostelFee(collectMonthlyFee.getHostelFeeBalance());
+			collectFee.getCollectMonthlyFeeForm().setNoteBooksFee(collectMonthlyFee.getNoteBooksFeeBalance());
+			collectFee.getCollectMonthlyFeeForm().setShoeFee(collectMonthlyFee.getShoeFeeBalance());
+			collectFee.getCollectMonthlyFeeForm().setSmartClassFee(collectMonthlyFee.getSmartClassFeeBalance());
+			collectFee.getCollectMonthlyFeeForm().setTuitionFee(collectMonthlyFee.getTuitionFeeBalance());
+			collectFee.getCollectMonthlyFeeForm().setUniformBeltFee(collectMonthlyFee.getUniformBeltFeeBalance());
+			collectFee.getCollectMonthlyFeeForm().setParticular1Fee(collectMonthlyFee.getParticular1FeeBalance());
+			collectFee.getCollectMonthlyFeeForm().setParticular2Fee(collectMonthlyFee.getParticular2FeeBalance());
+			collectFee.getCollectMonthlyFeeForm().setParticular3Fee(collectMonthlyFee.getParticular3FeeBalance());
+			collectFee.getCollectMonthlyFeeForm().setParticular3Fee(collectMonthlyFee.getParticular3FeeBalance());
+
+
+			collectFee.getCollectMonthlyFeeForm().setBalance(collectMonthlyFee.getBalance());
+			collectFee.getCollectMonthlyFeeForm().setStatus(collectMonthlyFee.getStatus());
+
+		} else {
+			CollectMonthlyFeeForm collectMonthlyFeeNew = new CollectMonthlyFeeForm();
+			//
+			collectMonthlyFeeNew.setBalance(monthlyFeeTotal);
+			collectMonthlyFeeNew.setStatus("PENDING");
+
+			collectFee.setCollectMonthlyFeeForm(collectMonthlyFeeNew);
+			// Populate how much they have to collect..
+			collectFee.getCollectMonthlyFeeForm().setJanFee(new BigDecimal(monthlyFee.getJanFee()));
+			collectFee.getCollectMonthlyFeeForm().setFebFee(new BigDecimal(monthlyFee.getFebFee()));
+			collectFee.getCollectMonthlyFeeForm().setMarFee(new BigDecimal(monthlyFee.getMarFee()));
+			collectFee.getCollectMonthlyFeeForm().setAprilFee(new BigDecimal(monthlyFee.getAprilFee()));
+			collectFee.getCollectMonthlyFeeForm().setMayFee(new BigDecimal(monthlyFee.getMayFee()));
+			collectFee.getCollectMonthlyFeeForm().setJunFee(new BigDecimal(monthlyFee.getJunFee()));
+			collectFee.getCollectMonthlyFeeForm().setJulFee(new BigDecimal(monthlyFee.getJulFee()));
+			collectFee.getCollectMonthlyFeeForm().setAugFee(new BigDecimal(monthlyFee.getAugFee()));
+			collectFee.getCollectMonthlyFeeForm().setSepFee(new BigDecimal(monthlyFee.getSepFee()));
+			collectFee.getCollectMonthlyFeeForm().setOctFee(new BigDecimal(monthlyFee.getOctFee()));
+			collectFee.getCollectMonthlyFeeForm().setNovFee(new BigDecimal(monthlyFee.getNovFee()));
+			collectFee.getCollectMonthlyFeeForm().setDecFee(new BigDecimal(monthlyFee.getDecFee()));
+
+
+		}
+
+
+		collectFee.getCollectMonthlyFeeForm().setName(collectFee.getStudentId_Name());
+		collectFee.getCollectMonthlyFeeForm().setStd(collectFee.getStd());
+		collectFee.getCollectMonthlyFeeForm().setSec(collectFee.getSec());
