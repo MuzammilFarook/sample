@@ -23,7 +23,6 @@
 <!-- JQuery -->
 <!--Import https://www.devbridge.com/sourcery/components/jquery-autocomplete/#-->
 <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 
 <script type="text/javascript" th:src="@{/js/jquery.autocomplete.js}"></script>
@@ -166,7 +165,7 @@
 						<h4>Collect Fee</h4>
 					</div>
 					<hr style="height: 1px; border: none; color: #333; background-color: #333;" />
-					<form autocomplete="off" th:action="@{/collectFee}" th:object="${collectFee}" method="post" class="m-t" role="form" data-toggle="validator">
+					<form autocomplete="off" id="collectForm" th:action="@{/collectFee}" th:object="${collectFee}" method="post" class="m-t" role="form" data-toggle="validator">
 						<div th:if="${configureMasterFee}" class="alert alert-danger" role="alert" th:text="${configureMasterFee}"></div>
 
 						<div class="row">
@@ -190,12 +189,12 @@
 										</div>
 
 										<div class="form-group">
-											<label for="section">Sec</label> <select class="form-control" th:field="*{sec}" name="sec" id="sec" required="required">
+											<label for="section">Sec</label> <select class="form-control" th:field="*{sec}" name="sec" id="sec">
 												<option th:value="NA" disabled="disabled" selected="selected">--select sec--</option>
 											</select>
 										</div>
 										<div class="form-group">
-											<label for="location">Name</label> <select class="form-control" th:field="*{studentId_Name}" name="studentId_Name" id="name" required="required">
+											<label for="location">Name</label> <select class="form-control" th:field="*{studentId_Name}" name="studentId_Name" id="name">
 												<option th:value="NA" disabled="disabled" selected="selected">--select name --</option>
 											</select>
 										</div>
@@ -206,7 +205,9 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-8" th:if="${collectFee.feeType!=null}">
+							<div class="col-md-8" id="rightContent" th:if="${collectFee.feeType!=null}">
+								<input id="reloadDecider" type="hidden" th:value="${collectFee.feeType}" />
+
 								<div class="panel panel-primary">
 									<div class="panel-heading">
 										<h3 class="panel-title">Fee History</h3>
@@ -228,36 +229,35 @@
 												<tr>
 													<td>Admission</td>
 													<td th:text="${collectFee.admissionFeeTotal!= null} ? ${collectFee.admissionFeeTotal} : '0.00'"></td>
-													<td th:text="${collectFee.collectAdmissionFee!= null} ? ${collectFee.collectAdmissionFee.booksFee} : '0.00'"></td>
-													<td th:text="${collectFee.collectAdmissionFee!= null} ? ${collectFee.collectAdmissionFee.balance} : '0.00'"></td>
-													<td>0</td>
+													<td th:text="${collectFee.admissionPaidTotal!= null} ? ${collectFee.admissionPaidTotal} : '0.00'"></td>
+													<td th:text="${collectFee.collectAdmissionFeeForm!= null} ? ${collectFee.collectAdmissionFeeForm.balance} : '0.00'"></td>
+													<td th:text="${collectFee.collectAdmissionFeeForm!= null} ? ${collectFee.collectAdmissionFeeForm.status} : 'NA'"></td>
 													<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalForAdmission">Collect</button></td>
 
 												</tr>
 												<tr th:if="${collectFee.feeType=='T'}">
 													<td>Term 1</td>
 													<td th:text="${collectFee.termFee.term1}"></td>
-													<td th:text="${collectFee.collectTermFee!= null} ? ${collectFee.collectTermFee.term1} : '0.00'"></td>
-													<td th:text="${collectFee.collectTermFee!= null} ? ${collectFee.collectTermFee.term1Balance}:'0.00'"></td>
-													<td>0</td>
-													<td><button class="btn btn-primary" data-toggle="modal" data-target="#modalForTerm1">Collect</button></td>
-
+													<td th:text="${collectFee.totalTerm1FeePaid!= null} ? ${collectFee.totalTerm1FeePaid} : '0.00'"></td>
+													<td th:text="${collectFee.collectTermFeeForm!= null} ? ${collectFee.collectTermFeeForm.term1Balance}:'0.00'"></td>
+													<td th:text="${collectFee.collectTermFeeForm!= null} ? ${collectFee.collectTermFeeForm.term1Status}:'NA'"></td>
+													<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalForTerm1">Collect</button></td>
 												</tr>
 												<tr th:if="${collectFee.feeType=='T'}">
 													<td>Term 2</td>
 													<td th:text="${collectFee.termFee.term2}"></td>
-													<td th:text="${collectFee.collectTermFee!= null} ? ${collectFee.collectTermFee.term2} : '0.00'"></td>
-													<td th:text="${collectFee.collectTermFee!= null} ? ${collectFee.collectTermFee.term2Balance}:'0.00'"></td>
-													<td>0</td>
-													<td><button class="btn btn-primary" data-toggle="modal" data-target="#myModalNorm2">Collect</button></td>
+													<td th:text="${collectFee.totalTerm2FeePaid!= null} ? ${collectFee.totalTerm2FeePaid} : '0.00'"></td>
+													<td th:text="${collectFee.collectTermFeeForm!= null} ? ${collectFee.collectTermFeeForm.term2Balance}:'0.00'"></td>
+													<td th:text="${collectFee.collectTermFeeForm!= null} ? ${collectFee.collectTermFeeForm.term2Status}:'NA'"></td>
+													<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalForTerm2">Collect</button></td>
 												</tr>
 												<tr th:if="${collectFee.feeType=='T'}">
 													<td>Term 3</td>
 													<td th:text="${collectFee.termFee.term3}"></td>
-													<td th:text="${collectFee.collectTermFee!= null} ? ${collectFee.collectTermFee.term3} : '0.00'"></td>
-													<td th:text="${collectFee.collectTermFee!= null} ? ${collectFee.collectTermFee.term3Balance}:'0.00'"></td>
-													<td>0</td>
-													<td><button class="btn btn-primary" data-toggle="modal" data-target="#myModalNorm2">Collect</button></td>
+													<td th:text="${collectFee.totalTerm3FeePaid!= null} ? ${collectFee.totalTerm3FeePaid} : '0.00'"></td>
+													<td th:text="${collectFee.collectTermFeeForm!= null} ? ${collectFee.collectTermFeeForm.term3Balance}:'0.00'"></td>
+													<td th:text="${collectFee.collectTermFeeForm!= null} ? ${collectFee.collectTermFeeForm.term3Status}:'NA'"></td>
+													<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalForTerm3">Collect</button></td>
 												</tr>
 											</tbody>
 										</table>
@@ -266,7 +266,7 @@
 
 								<!-- Modal for admission -->
 								<div class="modal fade" id="modalForAdmission" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-									<div class="modal-dialog">
+									<div class="modal-dialog modal-lg">
 										<div class="modal-content">
 											<!-- Modal Header -->
 											<div class="modal-header">
@@ -274,26 +274,117 @@
 													<span aria-hidden="true">&times;</span> <span class="sr-only">Close</span>
 												</button>
 												<h4 class="modal-title" id="myModalLabel">Collect Admission Fee</h4>
+												<h6>
+													For <span th:text="${collectFee.collectAdmissionFeeForm.name}"></span> studying in class <span th:text="${collectFee.collectAdmissionFeeForm.std}"></span> and section <span th:text="${collectFee.collectAdmissionFeeForm.sec}"></span>
+												</h6>
+												<input type="hidden" th:value="${collectFee.collectAdmissionFeeForm.name}" name="Cname" /> <input type="hidden" th:value="${collectFee.collectAdmissionFeeForm.std}" name="Cstd" /> <input type="hidden"
+													th:value="${collectFee.collectAdmissionFeeForm.sec}" name="Csec" />
+
 											</div>
 
-											<!-- Modal Body -->
+											<!-- Modal Body Starts-->
 											<div class="modal-body">
-												<div class="form-group">
-													<label for="exampleInputEmail1">Email address</label> <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" />
+												<div class="row">
+													<div class="col-md-4">
+														<div class="form-group">
+															<label for="tuitionFee"><b>Tuition</b></label> <input type="number" step="0.01" th:field="*{collectAdmissionFeeForm.tuitionFee}" th:max="*{collectAdmissionFeeForm.tuitionFee}" th:min="0" class="form-control"
+																data-error="Cannot enter value grater than the configured value and cannot enter value below 0." required />
+															<div class=" help-block with-errors"></div>
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group">
+															<label for="booksFee"><b>Books</b></label> <input type="number" step="0.01" th:field="*{collectAdmissionFeeForm.booksFee}" th:max="*{collectAdmissionFeeForm.booksFee}" th:min="0" class="form-control"
+																data-error="Cannot enter value grater than the configured value and cannot enter value below 0." required />
+															<div class=" help-block with-errors"></div>
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group">
+															<label for="noteBooksFee"><b>Note Books</b></label> <input type="number" step="0.01" th:field="*{collectAdmissionFeeForm.noteBooksFee}" th:max="*{collectAdmissionFeeForm.noteBooksFee}" th:min="0" class="form-control"
+																data-error="Cannot enter value grater than the configured value and cannot enter value below 0." required />
+															<div class=" help-block with-errors"></div>
+														</div>
+													</div>
 												</div>
-												<div class="form-group">
-													<label for="exampleInputPassword1">Password</label> <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
+												<br />
+												<div class="row">
+													<div class="col-md-4">
+														<div class="form-group">
+															<label for="computerFee"><b>Computer</b></label> <input type="number" step="0.01" th:field="*{collectAdmissionFeeForm.computerFee}" th:max="*{collectAdmissionFeeForm.computerFee}" th:min="0" class="form-control"
+																data-error="Cannot enter value grater than the configured value and cannot enter value below 0." required />
+															<div class=" help-block with-errors"></div>
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group">
+															<label for="uniformBeltFee"><b>Uniform & Belt</b></label> <input type="number" step="0.01" th:field="*{collectAdmissionFeeForm.uniformBeltFee}" th:max="*{collectAdmissionFeeForm.uniformBeltFee}" th:min="0" class="form-control"
+																data-error="Cannot enter value grater than the configured value and cannot enter value below 0." required />
+															<div class=" help-block with-errors"></div>
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group">
+															<label for="extraCurricularFee"><b>Extra-Curricular</b></label> <input type="number" step="0.01" th:field="*{collectAdmissionFeeForm.extraCurricularFee}" th:max="*{collectAdmissionFeeForm.extraCurricularFee}" th:min="0"
+																class="form-control" data-error="Cannot enter value grater than the configured value and cannot enter value below 0." required />
+															<div class=" help-block with-errors"></div>
+														</div>
+													</div>
 												</div>
-												<div class="checkbox">
-													<label> <input type="checkbox" /> Check me out
-													</label>
+												<br />
+												<div class="row">
+													<div class="col-md-4">
+														<div class="form-group">
+															<label for="shoeFee"><b>Shoe</b></label> <input type="number" step="0.01" th:field="*{collectAdmissionFeeForm.shoeFee}" th:max="*{collectAdmissionFeeForm.shoeFee}" class="form-control" th:min="0"
+																data-error="Cannot enter value grater than the configured value and cannot enter value below 0." required />
+															<div class=" help-block with-errors"></div>
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group">
+															<label for="smartClassFee"><b>Smart Class</b></label> <input type="number" step="0.01" th:field="*{collectAdmissionFeeForm.smartClassFee}" th:max="*{collectAdmissionFeeForm.smartClassFee}" th:min="0" class="form-control"
+																data-error="Cannot enter value grater than the configured value and cannot enter value below 0." required />
+															<div class=" help-block with-errors"></div>
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group">
+															<label for="hostelFee"><b>Hostel</b></label> <input type="number" step="0.01" th:field="*{collectAdmissionFeeForm.hostelFee}" th:max="*{collectAdmissionFeeForm.hostelFee}" th:min="0" class="form-control"
+																data-error="Cannot enter value grater than the configured value and cannot enter value below 0." required />
+															<div class=" help-block with-errors"></div>
+														</div>
+													</div>
 												</div>
-												<button type="submit" class="btn btn-default">Submit</button>
+												<br />
+												<div class="row">
+													<div class="col-md-4">
+														<div class="form-group">
+															<label th:text="${collectFee.particular1Label}"></label> <input type="number" step="0.01" th:field="*{collectAdmissionFeeForm.particular1Fee}" class="form-control" th:max="*{collectAdmissionFeeForm.particular1Fee}" th:min="0"
+																data-error="Cannot enter value grater than the configured value and cannot enter value below 0." required />
+															<div class=" help-block with-errors"></div>
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group">
+															<label th:text="${collectFee.particular2Label}"></label> <input type="number" step="0.01" th:field="*{collectAdmissionFeeForm.particular2Fee}" class="form-control" th:max="*{collectAdmissionFeeForm.particular2Fee}" th:min="0"
+																data-error="Cannot enter value grater than the configured value and cannot enter value below 0." required />
+															<div class=" help-block with-errors"></div>
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group">
+															<label th:text="${collectFee.particular3Label}"></label><input type="number" step="0.01" th:field="*{collectAdmissionFeeForm.particular3Fee}" class="form-control" th:max="*{collectAdmissionFeeForm.particular3Fee}" th:min="0"
+																data-error="Cannot enter value grater than the configured value and cannot enter value below 0." required />
+															<div class=" help-block with-errors"></div>
+														</div>
+													</div>
+												</div>
 											</div>
+											<!-- Modal Body Ends -->
 											<!-- Modal Footer -->
 											<div class="modal-footer">
 												<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-												<button type="submit" name="action" value="Submit" class="btn btn-primary block full-width m-b">Submit</button>
+												<button id="admSubmit" type="submit" name="action" value="SubmitAdm" class="btn btn-primary block full-width m-b">Submit</button>
 											</div>
 										</div>
 									</div>
@@ -309,38 +400,103 @@
 												<button type="button" class="close" data-dismiss="modal">
 													<span aria-hidden="true">&times;</span> <span class="sr-only">Close</span>
 												</button>
-												<h4 class="modal-title" id="myModalLabel">Collect Term Fee</h4>
+												<h4 class="modal-title" id="myModalLabel">Collect Term-1 Fee</h4>
+												<h6>
+													For <span th:text="${collectFee.collectTermFeeForm.name}"></span> studying in class <span th:text="${collectFee.collectTermFeeForm.std}"></span> and section <span th:text="${collectFee.collectTermFeeForm.sec}"></span>
+												</h6>
+												<input type="hidden" th:value="${collectFee.collectTermFeeForm.name}" name="T1name" /> <input type="hidden" th:value="${collectFee.collectTermFeeForm.std}" name="T1std" /> <input type="hidden"
+													th:value="${collectFee.collectTermFeeForm.sec}" name="T1sec" />
 											</div>
 
 											<!-- Modal Body -->
 											<div class="modal-body">
-
-
 												<div class="form-group">
-													<label for="exampleInputEmail1">Email address</label> <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" />
+													<label for="term1Fee"><b>Term-1 Fee</b></label> <input type="number" step="0.01" th:field="*{collectTermFeeForm.term1}" th:max="*{collectTermFeeForm.term1}" th:min="0" class="form-control"
+														data-error="Cannot enter value grater than the configured value and cannot enter value below 0." required />
+													<div class=" help-block with-errors"></div>
 												</div>
-												<div class="form-group">
-													<label for="exampleInputPassword1">Password</label> <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
-												</div>
-												<div class="checkbox">
-													<label> <input type="checkbox" /> Check me out
-													</label>
-												</div>
-												<button type="submit" class="btn btn-default">Submit</button>
-
-
-
 											</div>
 
 											<!-- Modal Footer -->
 											<div class="modal-footer">
 												<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-												<button type="submit" value="Submit" class="btn btn-primary block full-width m-b">Submit</button>
+												<button id="term1Submit" type="submit" name="action" value="SubmitTerm1" class="btn btn-primary block full-width m-b">Submit</button>
 											</div>
 										</div>
 									</div>
 								</div>
 								<!-- Modal for term 1 -->
+
+								<!-- Modal for term 2 -->
+								<div class="modal fade" id="modalForTerm2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<!-- Modal Header -->
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">
+													<span aria-hidden="true">&times;</span> <span class="sr-only">Close</span>
+												</button>
+												<h4 class="modal-title" id="myModalLabel">Collect Term-2 Fee</h4>
+												<h6>
+													For <span th:text="${collectFee.collectTermFeeForm.name}"></span> studying in class <span th:text="${collectFee.collectTermFeeForm.std}"></span> and section <span th:text="${collectFee.collectTermFeeForm.sec}"></span>
+												</h6>
+												<input type="hidden" th:value="${collectFee.collectTermFeeForm.name}" name="T2name" /> <input type="hidden" th:value="${collectFee.collectTermFeeForm.std}" name="T2std" /> <input type="hidden"
+													th:value="${collectFee.collectTermFeeForm.sec}" name="T2sec" />
+											</div>
+
+											<!-- Modal Body -->
+											<div class="modal-body">
+												<div class="form-group">
+													<label for="term2Fee"><b>Term-2 Fee</b></label> <input type="number" step="0.01" th:field="*{collectTermFeeForm.term2}" th:max="*{collectTermFeeForm.term2}" th:min="0" class="form-control"
+														data-error="Cannot enter value grater than the configured value and cannot enter value below 0." required />
+													<div class=" help-block with-errors"></div>
+												</div>
+											</div>
+
+											<!-- Modal Footer -->
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+												<button id="term2Submit" type="submit" name="action" value="SubmitTerm2" class="btn btn-primary block full-width m-b">Submit</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- Modal for term 2 -->
+								<!-- Modal for term 3 -->
+								<div class="modal fade" id="modalForTerm3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<!-- Modal Header -->
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">
+													<span aria-hidden="true">&times;</span> <span class="sr-only">Close</span>
+												</button>
+												<h4 class="modal-title" id="myModalLabel">Collect Term-3 Fee</h4>
+												<h6>
+													For <span th:text="${collectFee.collectTermFeeForm.name}"></span> studying in class <span th:text="${collectFee.collectTermFeeForm.std}"></span> and section <span th:text="${collectFee.collectTermFeeForm.sec}"></span>
+												</h6>
+												<input type="hidden" th:value="${collectFee.collectTermFeeForm.name}" name="T3name" /> <input type="hidden" th:value="${collectFee.collectTermFeeForm.std}" name="T3std" /> <input type="hidden"
+													th:value="${collectFee.collectTermFeeForm.sec}" name="T3sec" />
+											</div>
+
+											<!-- Modal Body -->
+											<div class="modal-body">
+												<div class="form-group">
+													<label for="term3Fee"><b>Term-3 Fee</b></label> <input type="number" step="0.01" th:field="*{collectTermFeeForm.term3}" th:max="*{collectTermFeeForm.term3}" th:min="0" class="form-control"
+														data-error="Cannot enter value grater than the configured value and cannot enter value below 0." required />
+													<div class=" help-block with-errors"></div>
+												</div>
+											</div>
+
+											<!-- Modal Footer -->
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+												<button id="term3Submit" type="submit" name="action" value="SubmitTerm3" class="btn btn-primary block full-width m-b">Submit</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- Modal for term 3 -->
 							</div>
 						</div>
 					</form>
@@ -382,13 +538,22 @@
 	<script>
 		$('#std').change(
 				function() {
+
+					if ($('#std').val() == 'NA') {
+						alert("Please submit standard!");
+						return;
+					}
 					$('#sec').empty();
 					$('#name').empty();
+					if ($('#reloadDecider').val() == 'T') {
+						/* window.location.replace("http://localhost:8080/collectFee"); */
+					}
+
 					$.getJSON("http://localhost:8080/getSecByStd", {
 						std : $(this).val(),
 						ajax : 'true'
 					}, function(data) {
-						var html = '<option value="">--Sec--</option>';
+						var html = '<option value="NA">--Sec--</option>';
 						var len = data.length;
 						for (var i = 0; i < len; i++) {
 							html += '<option value="' + data[i] + '">'
@@ -402,6 +567,11 @@
 		$('#sec')
 				.change(
 						function() {
+							if ($('#sec').val() == 'NA') {
+								alert("Please submit section!");
+								return;
+							}
+
 							$
 									.getJSON(
 											"http://localhost:8080/getListOfStudentsByStdAndSec",
@@ -411,7 +581,7 @@
 												ajax : 'true'
 											},
 											function(data) {
-												var html = '<option value="">--Name--</option>';
+												var html = '<option value="NA">--Name--</option>';
 												var len = data.length;
 												for (var i = 0; i < len; i++) {
 													html += '<option value="' + data[i] + '">'
@@ -423,17 +593,40 @@
 											});
 						});
 
-	/* 	$('#name').change(function() {
-			$.getJSON("http://localhost:8080/populateCollectFee", {
-				std : $('#std').val(),
-				sec : $('#sec').val(),
-				name : $(this).val(),
-				ajax : 'true'
-			}, function(data) {
-				$('#booksFee').val(data.collectAdmissionFee.booksFee)
-			});
-		}); */
+		$("#admSubmit").click(function() {
+			var c = confirm("Proceed with this fee?");
+			return c;
+		});
 		
+		$("#term1Submit").click(function() {
+			var c = confirm("Proceed with this fee?");
+			return c;
+		});
+		
+		$("#term2Submit").click(function() {
+			var c = confirm("Proceed with this fee?");
+			return c;
+		});
+		
+		$("#term3Submit").click(function() {
+			var c = confirm("Proceed with this fee?");
+			return c;
+		});
+		
+		$('form input').on('keypress', function(e) {
+		    return e.which !== 13;
+		});
+
+		/* 	$('#name').change(function() {
+				$.getJSON("http://localhost:8080/populateCollectFee", {
+					std : $('#std').val(),
+					sec : $('#sec').val(),
+					name : $(this).val(),
+					ajax : 'true'
+				}, function(data) {
+					$('#booksFee').val(data.collectAdmissionFee.booksFee)
+				});
+			}); */
 	</script>
 	<script th:src="@{js/bars.js}"></script>
 	<script th:src="@{js/jquery.nicescroll.js}"></script>
