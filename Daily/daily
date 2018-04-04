@@ -1,3 +1,4 @@
+https://github.com/michaelcgood/PagingAndSortingRepository-Example
 MonthlyFee monthlyFee = monthlyFeeService.findByMasterFeeUniqueId(masterFeeConfig.getId());
 		collectFee.setMonthlyFee(monthlyFee);
 		BigDecimal monthlyFeeTotal = new BigDecimal(monthlyFee.getJanFee()).add(new BigDecimal(monthlyFee.getFebFee())).add(new BigDecimal(monthlyFee.getMarFee())).add(new BigDecimal(monthlyFee.getAprilFee()))
