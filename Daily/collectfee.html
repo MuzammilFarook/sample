@@ -527,7 +527,7 @@
 													For <span th:text="${collectFee.collectMonthlyFeeForm.name}"></span> studying in class <span th:text="${collectFee.collectMonthlyFeeForm.std}"></span> and section <span th:text="${collectFee.collectMonthlyFeeForm.sec}"></span>
 												</h6>
 												<input type="hidden" th:value="${collectFee.collectMonthlyFeeForm.name}" name="Janname" /> <input type="hidden" th:value="${collectFee.collectMonthlyFeeForm.std}" name="Janstd" /> <input type="hidden"
-													th:value="${collectFee.collectMonthlyFeeForm.sec}" name="Jansec" /> <input type="hidden" th:value="JAN" name="MonthCtrl" />
+													th:value="${collectFee.collectMonthlyFeeForm.sec}" name="Jansec" />
 											</div>
 
 											<!-- Modal Body -->
@@ -542,7 +542,7 @@
 											<!-- Modal Footer -->
 											<div class="modal-footer">
 												<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-												<button id="monthSubmit" type="submit" name="action" value="SubmitMonthly" class="btn btn-primary block full-width m-b">Submit</button>
+												<button id="janSubmit" type="submit" name="action" value="SubmitJan" class="btn btn-primary block full-width m-b">Submit</button>
 											</div>
 										</div>
 									</div>
@@ -561,8 +561,8 @@
 												<h6>
 													For <span th:text="${collectFee.collectMonthlyFeeForm.name}"></span> studying in class <span th:text="${collectFee.collectMonthlyFeeForm.std}"></span> and section <span th:text="${collectFee.collectMonthlyFeeForm.sec}"></span>
 												</h6>
-												<input type="hidden" th:value="${collectFee.collectMonthlyFeeForm.name}" name="Janname" /> <input type="hidden" th:value="${collectFee.collectMonthlyFeeForm.std}" name="Janstd" /> <input type="hidden"
-													th:value="${collectFee.collectMonthlyFeeForm.sec}" name="Jansec" /> <input type="hidden" th:value="FEB" name="MonthCtrl" />
+												<input type="hidden" th:value="${collectFee.collectMonthlyFeeForm.name}" name="Febname" /> <input type="hidden" th:value="${collectFee.collectMonthlyFeeForm.std}" name="Febstd" /> <input type="hidden"
+													th:value="${collectFee.collectMonthlyFeeForm.sec}" name="Febsec" />
 											</div>
 
 											<!-- Modal Body -->
@@ -577,7 +577,7 @@
 											<!-- Modal Footer -->
 											<div class="modal-footer">
 												<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-												<button id="monthSubmit" type="submit" name="action" value="SubmitMonthly" class="btn btn-primary block full-width m-b">Submit</button>
+												<button id="febSubmit" type="submit" name="action" value="SubmitFeb" class="btn btn-primary block full-width m-b">Submit</button>
 											</div>
 										</div>
 									</div>
@@ -699,7 +699,7 @@
 			return c;
 		});
 		
-		$("#monthSubmit").click(function() {
+		$("#janSubmit").click(function() {
 			var c = confirm("Proceed with this fee?");
 			return c;
 		});
