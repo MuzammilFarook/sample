@@ -2,6 +2,8 @@ http://michaelcgood.com/spring-batch-csv-processing/
 
 Image:
 https://stackoverflow.com/questions/33839309/how-to-show-image-from-h2-database-to-thymeleaf
+https://stackoverflow.com/questions/23441527/how-do-i-show-blob-image-tag-on-html-page-using-spring-mvc
+http://www.baeldung.com/spring-mvc-image-media-data
 =============================================
 /*
  * The Alphanum Algorithm is an improved sorting algorithm for strings
