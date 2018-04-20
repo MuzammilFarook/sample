@@ -9,7 +9,35 @@ Types of Search:
 2.Each class - all subjects - full page-data table - Pass%/Fail% - possibility of graph - https://careydevelopment.us/2017/07/01/add-charts-spring-boot-app-highchart/
 3.Each class - per subject - Data table
 4. Student wise data table - possibility of graph - https://careydevelopment.us/2017/07/01/add-charts-spring-boot-app-highchart/
+Charts:
+Controller
+@RequestMapping("/gcharts")
+public class GglPieChart {
+	
+	@RequestMapping(value = "/piechart", method = RequestMethod.GET)
+	public String drawPieChart(ModelMap model)
+	{
+		Slice s1 = Slice.newSlice(33, Color.newColor("CACACA"), "Mac", "Mac");
+		Slice s2 = Slice.newSlice(33, Color.newColor("DF7417"), "Window",
+				"Window");
+		Slice s3 = Slice.newSlice(33, Color.newColor("951800"), "Linux",
+				"Linux");
+		Slice s4 = Slice.newSlice(1, Color.newColor("01A1DB"), "Others",
+				"Others");
 
+		PieChart pieChart = GCharts.newPieChart(s1, s2, s3, s4);
+		pieChart.setTitle("Google Pie Chart", Color.BLACK, 15);
+		pieChart.setSize(720, 360);
+		pieChart.setThreeD(true);
+
+		model.addAttribute("pieUrl", pieChart.toURLString());
+System.out.println("All done");
+		return "display";
+	}
+
+}
+UI:
+<img alt="Google Pie Chart" th:attr="src=${pieUrl}"/>
 Image:
 https://stackoverflow.com/questions/33839309/how-to-show-image-from-h2-database-to-thymeleaf
 https://stackoverflow.com/questions/23441527/how-do-i-show-blob-image-tag-on-html-page-using-spring-mvc
