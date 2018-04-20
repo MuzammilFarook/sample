@@ -34,6 +34,16 @@ public class GglPieChart {
 		pieChart.setTitle("Google Pie Chart", Color.BLACK, 15);
 		pieChart.setSize(720, 360);
 		pieChart.setThreeD(true);
+		
+		Plot plot = Plots.newPlot(Data.newData(100, 10, 20, 30, 40, 50, 60, 70, 80, 90));
+		//plot.
+	       plot.addShapeMarkers(Shape.SQUARE, Color.BLUE, 12);
+		
+		BarChart barChart = GCharts.newBarChart(plot);
+		barChart.setTitle("Muzammil", Color.BLACK, 15);
+		barChart.setSize(500, 500);
+		barChart.setDataStacked(true);
+		model.addAttribute("barUrl", barChart.toURLString());
 
 		model.addAttribute("pieUrl", pieChart.toURLString());
 System.out.println("All done");
