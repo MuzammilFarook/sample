@@ -1,4 +1,14 @@
+CSV to db :
 http://michaelcgood.com/spring-batch-csv-processing/
+MAPS:
+https://jsfiddle.net/upsidown/1svw299r/
+Excellent data table:
+https://jsfiddle.net/julmot/buh9h2r8/
+Types of Search:
+1.Overall Class level - Pass%/Fail% - possibility of graph - https://careydevelopment.us/2017/07/01/add-charts-spring-boot-app-highchart/
+2.Each class - all subjects - full page-data table - Pass%/Fail% - possibility of graph - https://careydevelopment.us/2017/07/01/add-charts-spring-boot-app-highchart/
+3.Each class - per subject - Data table
+4. Student wise data table - possibility of graph - https://careydevelopment.us/2017/07/01/add-charts-spring-boot-app-highchart/
 
 Image:
 https://stackoverflow.com/questions/33839309/how-to-show-image-from-h2-database-to-thymeleaf
@@ -6,7 +16,7 @@ https://stackoverflow.com/questions/23441527/how-do-i-show-blob-image-tag-on-htm
 http://www.baeldung.com/spring-mvc-image-media-data
 =============================================
 
-https://sbci.gov.ie/brexit-loan-scheme/frequently-asked-questions
+
 
 /*
  * The Alphanum Algorithm is an improved sorting algorithm for strings
