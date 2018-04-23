@@ -1,3 +1,6 @@
+Multiple rows insert thymeleaf-springboot:
+https://stackoverflow.com/questions/47839700/how-to-submit-table-data-in-spring-thymeleaf
+
 CSV to db batch:
 http://michaelcgood.com/spring-batch-csv-processing/
 Excel to db - Not batch:
