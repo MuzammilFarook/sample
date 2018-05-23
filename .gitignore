@@ -1,12 +1,20 @@
-*.class
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
 
-# Package Files #
-*.jar
-*.war
-*.ear
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+$('#std').change(
+				function() {
+					$('#sec').empty();
+					$('#name').empty();
+					$.getJSON("/getSecByStd", {
+						std : $(this).val(),
+						ajax : 'true'
+					}, function(data) {
+						var html = '<option value="">--Sec--</option>';
+						var len = data.length;
+						for (var i = 0; i < len; i++) {
+							html += '<option value="' + data[i] + '">'
+									+ data[i] + '</option>';
+						}
+						html += '</option>';
+						$('#sec').html(html);
+					});
+				});
