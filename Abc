@@ -216,3 +216,318 @@ public class AlphanumComparator implements Comparator<String>
 }
 ====================
 https://wetransfer.com/downloads/8db8aef6799626f55a4e3deb227955b320181023074922/6771fc03db3d58d525781dad9eb34f0020181023074922/28d6a5?utm_campaign=WT_email_tracking&utm_content=general&utm_medium=download_button&utm_source=notify_recipient_email
+====================================
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="description" content="muzammil" />
+<meta name="author" content="" />
+<link rel="icon" href="favicon.ico" />
+
+<title>Schools360</title>
+
+<!-- Bootstrap core CSS -->
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+<link th:href="@{css/style.css}" rel="stylesheet" />
+<link th:href="@{css/component.css}" rel="stylesheet" />
+<link th:href="@{css/style_grid.css}" rel="stylesheet" />
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link th:href="@{css/app.css}" rel="stylesheet" />
+<script th:src="@{js/scripts.js}"></script>
+
+<!-- JQuery -->
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+
+<script type="text/javascript" th:src="@{/js/jquery.autocomplete.js}"></script>
+<!-- Compiled and minified JavaScript -->
+<script type="text/javascript" th:src="@{/js/materialize.min.js}"></script>
+<style>
+.fixed-panel {
+	min-height: 300px;
+	max-height: 300px;
+	overflow-y: scroll;
+}
+</style>
+
+
+</head>
+
+<body>
+
+	<!-- banner -->
+	<div class="wthree_agile_admin_info">
+		<div th:replace="fragments/headerinc :: nav"></div>
+		<div class="clearfix"></div>
+		<!-- //w3_agileits_top_nav-->
+		<!-- /inner_content-->
+		<div class="inner_content">
+			<br> <br>
+			<div class="container">
+				<div class="agile_info_shadow">
+					<div class="alert alert-info">
+						<h3>Instructions</h3>
+						<br>
+						<ol>
+							<li>Please download the file template and fill-in the details and upload with the same file name/extensions.</li>
+							<li>In the sheet, the yellow color highlighted columns are mandatory while the rest are optional.</li>
+							<li>You can upload details all at once or class-wise or any number of entries with minimum as 1 entry.</li>
+							<li><strong>If the yellow color column's cell/cells are left blank then,the further rows will not be processed!</strong></li>
+						</ol>
+					</div>
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<span class="lead">Download template</span>
+						</div>
+						<div class="panel-body">
+							<span class="lead">Click here to download the template..</span> <a th:href="@{/download-marksDocument}" class="btn btn-success pull-right">Download</a>
+						</div>
+					</div>
+					<div class="panel panel-primary">
+
+						<div class="panel-heading">
+							<span class="lead">Upload Details</span>
+						</div>
+						<div class="uploadcontainer">
+							<form autocomplete="off" action="#" th:action="@{/add-marksDocument}" th:object="${fileBucket}" method="post" class="m-t" role="form" enctype="multipart/form-data" data-toggle="validator">
+								<div th:if="${alreadyRegisteredMessage}" class="alert alert-danger" role="alert" th:text="${alreadyRegisteredMessage}"></div>
+								<div th:if="${fileTypeErrorMessage}" class="alert alert-danger" role="alert" th:text="${fileTypeErrorMessage}"></div>
+								<div th:if="${success}">
+									<div class="pull-alert">
+										<div class="alert alert-success pull-right">
+											<button type="button" class="btn btn-default btn-circle btn-xl-alert btn-lateral btn-float-alert">
+												<i class="glyphicon glyphicon-ok"></i>
+											</button>
+											<strong><strong th:text="${totalStudents}"></strong> student details saved successfully in <strong th:text="${success}"></strong> seconds</strong>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-md-12">
+										<label class="col-md-3 control-lable" for="file">Upload Student details</label>
+										<div class="col-md-7">
+											<input type="file" th:field="*{file}" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="file" class="form-control input-sm" required />
+											<div class="has-error">
+												<div class=" help-block with-errors"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-md-12">
+										<label class="col-md-3 control-lable" for="file">Description (Optional)</label>
+										<div class="col-md-7">
+											<input type="text" th:field="*{description}" id="description" class="form-control input-sm" required />
+										</div>
+
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-md-12">
+										<label class="col-md-3 control-lable" for="std">Class</label> 
+										<div class="col-md-7">
+										<select class="form-control input-sm" required="required" th:field="*{std}" name="std" id="std" required>
+											<option th:value="NA">-- Select Class --</option>
+											<option th:each="dropDownItem : ${standards}" th:value="${dropDownItem.key}" th:text="${dropDownItem.value}" />
+										</select>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-group col-md-12">
+										<label class="col-md-3 control-lable" for="section">Sec</label>
+										<div class="col-md-7"> 
+										<select class="form-control input-sm" th:field="*{sec}" name="sec" id="sec" required>
+											<option th:value="NA">-- Select Section --</option>
+										</select>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="form-actions floatRight">
+										<input type="submit" value="Upload" onclick="waitingDialog.show('Validating and uploading the data..Please do not refresh..');" class="btn btn-primary btn-sm">
+									</div>
+								</div>
+
+
+
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- //inner_content-->
+	</div>
+	<!-- banner -->
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+		<input hidden type="submit" value="Sign Out" />
+	</form>
+	<!--copy rights start here-->
+	<div>
+		<br>
+	</div>
+	<div class="copyrights">
+		© 2018 Schools360. All Rights Reserved | Design by <a href="http://epyloc.com/" target="_blank">epyloc</a>
+	</div>
+	<!--copy rights end here-->
+	<!-- js -->
+	<script th:src="@{js/classie.js}"></script>
+	<script th:src="@{js/gnmenu.js}"></script>
+	<script>
+		new gnMenu(document.getElementById('gn-menu'));
+	</script>
+	<script th:src="@{js/screenfull.js}"></script>
+
+	<script>
+		$(function() {
+			$('#supported').text('Supported/allowed: ' + !!screenfull.enabled);
+			if (!screenfull.enabled) {
+				return false;
+			}
+			$('#toggle').click(function() {
+				screenfull.toggle($('#container')[0]);
+			});
+		});
+	</script>
+	<script th:src="@{js/bars.js}"></script>
+	<script th:src="@{js/jquery.nicescroll.js}"></script>
+
+	<!-- Bootstrap -->
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<!-- Bootstrap Validator plugin -->
+	<script th:src="@{/js/validator.min.js}"></script>
+	<script type="text/javascript">
+		var waitingDialog = waitingDialog
+				|| (function($) {
+					'use strict';
+
+					// Creating modal dialog's DOM
+					var $dialog = $('<div class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:15%; overflow-y:visible;">'
+							+ '<div class="modal-dialog modal-m">'
+							+ '<div class="modal-content">'
+							+ '<div class="modal-header"><h3 style="margin:0;"></h3></div>'
+							+ '<div class="modal-body">'
+							+ '<div class="progress progress-striped active" style="margin-bottom:0;"><div class="progress-bar" style="width: 100%"></div></div>'
+							+ '</div>' + '</div></div></div>');
+
+					return {
+						/**
+						 * Opens our dialog
+						 * @param message Custom message
+						 * @param options Custom options:
+						 * 				  options.dialogSize - bootstrap postfix for dialog size, e.g. "sm", "m";
+						 * 				  options.progressType - bootstrap postfix for progress bar type, e.g. "success", "warning".
+						 */
+						show : function(message, options) {
+							// Assigning defaults
+							if (typeof options === 'undefined') {
+								options = {};
+							}
+							if (typeof message === 'undefined') {
+								message = 'Loading';
+							}
+							var settings = $.extend({
+								dialogSize : 'm',
+								progressType : '',
+								onHide : null
+							// This callback runs after the dialog was hidden
+							}, options);
+
+							// Configuring dialog
+							$dialog.find('.modal-dialog').attr('class',
+									'modal-dialog').addClass(
+									'modal-' + settings.dialogSize);
+							$dialog.find('.progress-bar').attr('class',
+									'progress-bar');
+							if (settings.progressType) {
+								$dialog
+										.find('.progress-bar')
+										.addClass(
+												'progress-bar-'
+														+ settings.progressType);
+							}
+							$dialog.find('h3').text(message);
+							// Adding callbacks
+							if (typeof settings.onHide === 'function') {
+								$dialog.off('hidden.bs.modal').on(
+										'hidden.bs.modal', function(e) {
+											settings.onHide.call($dialog);
+										});
+							}
+							// Opening dialog
+							$dialog.modal();
+						},
+						/**
+						 * Closes dialog
+						 */
+						hide : function() {
+							$dialog.modal('hide');
+						}
+					};
+
+				})(jQuery);
+	</script>
+	<script>
+	$('#std').change(
+			function() {
+
+				if ($('#std').val() == 'NA') {
+					alert("Please submit standard!");
+					return;
+				}
+				$('#sec').empty();
+				$('#name').empty();
+
+				$.getJSON("/getSecByStd", {
+					std : $(this).val(),
+					ajax : 'true'
+				}, function(data) {
+					var html = '<option value="NA">--Sec--</option>';
+					var len = data.length;
+					for (var i = 0; i < len; i++) {
+						html += '<option value="' + data[i] + '">'
+								+ data[i] + '</option>';
+					}
+					html += '</option>';
+					$('#sec').html(html);
+				});
+			});
+	</script>
+</body>
+</html>
