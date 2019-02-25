@@ -1,0 +1,21 @@
+The Central Credit Register is a new secure system for collecting personal and credit information on loans of €500 or more. The Central Bank of Ireland operates it under the Credit Report Act 2013.
+
+This Act was created as a result of the Inter-Agency Working Group on Credit Histories’ recommendations; and
+provides for a Central Credit Register to resolve weaknesses identified following the 2008 banking crisis.
+The Government developed the Central Credit Register to collect and centralise information on loans. This was agreed as part of the EU/IMF Programme of Financial Support for Ireland
+
+The System collects information on loans of €500 or more including:
+Credit cards, Overdrafts, Personal loans, Mortgages, Business loans,etc
+
+
+Technology :
+
+Spring boot,micro services,spring data jpa, swagger,jwt,
+Oracle db
+Jenkins and JVM with chef, spluck for monitoring
+
+Extra-mile:
+
+Dashboard for CCR with bootstrap,jquery and spring mvc,data jps and security.
+
+
