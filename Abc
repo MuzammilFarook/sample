@@ -1,3 +1,19 @@
+Hi All, 
+
+As per discussion with John Cos, the following changes has been made to the credit-service-ccr-support microservice.
+
+1.Report module - This could be run any number of times before running the "identity and save" endpoint.
+
+2. Stop "identity and save" when there are any records present before the run to ensure the scripts table is clean. 
+
+3. Include customer information from key mapper micro service and persist NAEs for all original enquiries which will be impacted by the 6 month enquiry rule.
+
+I have completed the code and checked in. So the functional part is done.
+
+Ashish is covering the Junits in parallel and we will try to finish it by today. 
+
+I am yet to update the wiki page with the above changes. Please do let me know in case of any concerns.
+
 https://github.com/alexmegremis/challenge01
 http://www.inis.gov.ie/en/INIS/Pages/visas-reentry-apply-stamp3
 JSFIDDLE MAGICS:
