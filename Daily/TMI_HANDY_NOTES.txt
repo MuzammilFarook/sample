@@ -1,0 +1,26 @@
+250025062007 - hdfc loan acc number
+coi DHFL paramerica insurance - 
+=======================
+52.169.116.221
+c_muzammil.farook@tmireland.onmicrosoft.com
+b_muzammil.farook@tmireland.onmicrosoft.com - Muzam$cs.ie
+
+===============================
+Open API
+https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=3fd2be6f0c70a2a598f084ddfb75487c&page=1
+================================SANTHOSH
+https://github.com/Enamul121/enamra
+https://github.com/donnatto/ez-learning/tree/master/src/main/resources
+https://github.com/callicoder/spring-boot-websocket-chat-demo
+https://codepen.io/kostastepetes/pen/YzpdQMO
+
+movie app in downloads - Front end
+Integrate with video stream project 
+
+==============
+================================
+CMC USER DETAILS
+User ID	220614W00654
+Password	MLVBLD6
+
+Mother RCHID :133800000196
