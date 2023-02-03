@@ -1,15 +1,1 @@
 
-private void duplicateNode(ConnectionsResponseDto connections, Connection edConn) {
-        ConnectionNode nodeToDuplicate = connections.getNodes().stream()
-                .filter(node -> node.getId().equals(edConn.getConnected())).findFirst().orElseThrow(
-                        () -> new BadRequestException("Inconsistent data provided!"));
-        int increasedId = connections.getNodes().stream().map(ConnectionNode::getId).mapToInt(Integer::parseInt)
-                .max().orElseThrow(NoSuchElementException::new) + 1;
-        String newId = String.valueOf(increasedId);
-        ConnectionNode newNode = ConnectionNode.builder().id(newId)
-                .customerId(nodeToDuplicate.getCustomerId()).srcSystem(nodeToDuplicate.getSrcSystem())
-                .fullName(nodeToDuplicate.getFullName()).customerType(nodeToDuplicate.getCustomerType())
-                .build();
-        connections.getNodes().add(newNode);
-        edConn.setConnected(newId);
-    }
