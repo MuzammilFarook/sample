@@ -1,19 +1,1 @@
 
-private void duplicateTwiceConnectedNodes(ConnectionsResponseDto connections) {
-        List<Connection> edConnections = connections.getConnections().stream()
-                .filter(conn -> NON_CHAINABLE_CONNECTION_TYPES.contains(conn.getConnectionType())).collect(
-                        Collectors.toList());
-        List<Connection> crConnections = connections.getConnections().stream()
-                .filter(conn -> !edConnections.contains(conn)).collect(
-                        Collectors.toList());
-        edConnections.forEach((edConn) -> {
-            // If the target of the ED connection is also the target of a CR
-            boolean isTwiceConnected = crConnections.stream().map(Connection::getConnected)
-                    .anyMatch(target -> target.equals(edConn.getConnected()));
-            if (isTwiceConnected) {
-                // Then duplicate the node, increasing the ID, and use the duplicated one as the ED connection target
-                duplicateNode(connections, edConn);
-            }
-        });
-
-    }
