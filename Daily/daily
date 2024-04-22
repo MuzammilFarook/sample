@@ -1,4 +1,22 @@
-https://github.com/michaelcgood/PagingAndSortingRepository-Example
+Subject: Request for Three Months Work Arrangement Due to Family Health Reasons
+
+Dear [Manager's Name],
+
+I hope this email finds you well. I am writing to inform you about a personal matter that requires my attention and flexibility in my work arrangements.
+
+Over the past few weeks, my wife, Nivedha, has been experiencing significant health issues, including anxiety disorder, which has resulted in frequent anxiety attacks and weight loss. After consulting with medical professionals, it has been recommended that she undergoes treatment in India, where we have the support of our families to assist us during this challenging time.
+
+In light of this situation, I kindly request a temporary adjustment to my work schedule for a period of three months. My preferred option would be to work from home during this time. However, I am also willing to work from AIB authorized project premises such as Infosys or Accenture if necessary.
+
+If working from home is not feasible, I would like to take three months off, utilizing all of my annual leave entitlement (33 days) and seven weeks of parental leave. Please be assured that while we are in India, I will be available to work as needed, as I anticipate that I won't be constantly engaged in treatment-related activities.
+
+I understand the importance of my role and responsibilities within the team, and I am committed to maintaining productivity and communication during this period of transition. I am more than willing to discuss any adjustments or alternative arrangements that may be necessary to ensure the smooth operation of our projects.
+
+Thank you for your understanding and support during this challenging time. I look forward to discussing this further and finding a solution that works for both the team and my family.
+
+Best regards,
+
+Muzammil Farook
 Catching : http://javasampleapproach.com/spring-framework/spring-data/springboot-hazelcast-cache-postgresql-backend
 MonthlyFee monthlyFee = monthlyFeeService.findByMasterFeeUniqueId(masterFeeConfig.getId());
 		collectFee.setMonthlyFee(monthlyFee);
