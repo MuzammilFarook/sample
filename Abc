@@ -557,3 +557,69 @@ https://wetransfer.com/downloads/8db8aef6799626f55a4e3deb227955b320181023074922/
 		LinearGradientFill fill = Fills.newLinearGradientFill(0, Color.LAVENDER, 100);
 		barChart.setBackgroundFill(fill);
 		model.addAttribute("barUrl", barChart.toURLString());
+private void injectIntoRequest(Map<String, Object> root, String path, Object value) {
+        String[] parts = path.split("\\.");
+        Object current = root;
+
+        for (int i = 0; i < parts.length - 1; i++) {
+            String part = parts[i];
+
+            boolean isList = part.endsWith("[]");
+            String cleanKey = isList ? part.substring(0, part.length() - 2) : part;
+
+            if (current instanceof Map) {
+                Map<String, Object> map = (Map<String, Object>) current;
+
+                if (isList) {
+                    List<Object> list = (List<Object>) map.computeIfAbsent(cleanKey, k -> new ArrayList<>());
+                    if (list.isEmpty()) {
+                        list.add(new HashMap<>()); // add first object if missing
+                    }
+                    current = list.get(0); // inject into first element
+                } else {
+                    current = map.computeIfAbsent(cleanKey, k -> new HashMap<>());
+                }
+            }
+        }
+
+        // Final step: inject the actual value
+        if (current instanceof Map) {
+            Map<String, Object> map = (Map<String, Object>) current;
+            String lastPart = parts[parts.length - 1];
+            map.put(lastPart, value);
+        }
+    }
+
+
+    private void injectKeyValueIntoPath(Map<String, Object> root, String path, String key, Object value) {
+        String[] parts = path.split("\\.");
+        Object current = root;
+
+        for (int i = 0; i < parts.length; i++) {
+            String part = parts[i];
+
+            boolean isList = part.endsWith("[]");
+            String cleanKey = isList ? part.substring(0, part.length() - 2) : part;
+
+            if (i == parts.length - 1) {
+                if (current instanceof Map) {
+                    ((Map<String, Object>) current).put(key, value);
+                }
+                break;
+            }
+
+            if (current instanceof Map) {
+                Map<String, Object> map = (Map<String, Object>) current;
+
+                if (isList) {
+                    List<Object> list = (List<Object>) map.computeIfAbsent(cleanKey, k -> new ArrayList<>());
+                    if (list.isEmpty()) {
+                        list.add(new HashMap<>());
+                    }
+                    current = list.get(0); // inject into the first element
+                } else {
+                    current = map.computeIfAbsent(cleanKey, k -> new HashMap<>());
+                }
+            }
+        }
+    }
