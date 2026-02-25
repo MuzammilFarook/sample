@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> Tracker — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #FAF8F5;
+  --bg2: #F3F0EB;
+  --white: #FFFFFF;
+  --border: #E8E2D9;
+  --border-strong: #D4CCC0;
+  --gold: #C9952A;
+  --gold-light: #F5E9CC;
+  --gold-mid: #E8C96A;
+  --slate: #1E2535;
+  --slate-mid: #3D4760;
+  --slate-light: #6B7491;
+  --muted: #9CA3AF;
+  --green: #2D8C6F;
+  --green-bg: #EDFAF4;
+  --amber: #D97706;
+  --amber-bg: #FEF8EC;
+  --blue: #3B5BDB;
+  --blue-bg: #EEF2FF;
+  --red: #DC2626;
+  --shadow-sm: 0 1px 4px rgba(30,37,53,0.07), 0 1px 2px rgba(30,37,53,0.04);
+  --shadow: 0 4px 20px rgba(30,37,53,0.08), 0 2px 6px rgba(30,37,53,0.04);
+  --shadow-lg: 0 16px 48px rgba(30,37,53,0.13), 0 4px 14px rgba(30,37,53,0.07);
+}
+
+body {
+  background: var(--bg);
+  color: var(--slate);
+  font-family: 'Outfit', sans-serif;
+  min-height: 100vh;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(30,37,53,0.055) 1px, transparent 1px);
+  background-size: 26px 26px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(250,248,245,0.94);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  height: 66px;
+}
+
+.nav-brand { display: flex; align-items: center; gap: 11px; }
+
+.brand-mark {
+  width: 34px; height: 34px;
+  background: var(--slate);
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 2px 8px rgba(30,37,53,0.2);
+  position: relative;
+}
+.brand-mark::after {
+  content: '';
+  position: absolute;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--gold-mid);
+  bottom: -2px; right: -2px;
+  border: 2px solid var(--bg);
+  animation: livePulse 2.4s ease-in-out infinite;
+}
+@keyframes livePulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(232,201,106,0.6); }
+  50% { box-shadow: 0 0 0 4px rgba(232,201,106,0); }
+}
+
+.brand-mark svg { width: 18px; height: 18px; fill: none; stroke: var(--gold-mid); stroke-width: 1.5; }
+.brand-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 600; color: var(--slate); }
+.brand-name span { color: var(--gold); }
+
+.nav-pills { display: flex; gap: 4px; }
+.nav-pill {
+  font-size: 0.82rem; font-weight: 500;
+  color: var(--slate-light);
+  text-decoration: none;
+  padding: 7px 18px;
+  border-radius: 8px;
+  transition: all 0.18s;
+}
+.nav-pill:hover { background: var(--bg2); color: var(--slate); }
+.nav-pill.active { background: var(--slate); color: #fff; box-shadow: 0 2px 8px rgba(30,37,53,0.25); }
+
+/* Layout */
+.page {
+  position: relative; z-index: 1;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 56px 32px 100px;
+}
+
+.page-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 44px;
+  flex-wrap: wrap;
+}
+
+.page-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.eyebrow-bar { width: 28px; height: 2px; background: linear-gradient(90deg, var(--gold), var(--gold-mid)); border-radius: 2px; }
+.eyebrow-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); }
+
+.page-title { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 600; letter-spacing: -0.025em; line-height: 1.08; }
+.page-title em { font-style: italic; color: var(--gold); }
+
+.controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.ctrl-input, .ctrl-select {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  color: var(--slate);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.83rem;
+  font-weight: 400;
+  padding: 9px 13px;
+  outline: none;
+  transition: border-color 0.2s;
+  min-width: 0;
+  box-shadow: var(--shadow-sm);
+}
+.ctrl-input:focus, .ctrl-select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,149,42,0.1); }
+.ctrl-input::placeholder { color: var(--muted); }
+.ctrl-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='6' fill='none'%3E%3Cpath d='M1 1l4.5 4 4.5-4' stroke='%236B7491' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; cursor: pointer; }
+
+/* Stat cards */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+  animation: riseUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+@keyframes riseUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stat-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 24px 22px 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+.stat-card .accent-stripe {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 18px 18px 0 0;
+}
+.stat-card.c-total .accent-stripe { background: linear-gradient(90deg, var(--slate), var(--slate-mid)); }
+.stat-card.c-todo .accent-stripe { background: var(--blue); }
+.stat-card.c-wip .accent-stripe { background: var(--amber); }
+.stat-card.c-done .accent-stripe { background: var(--green); }
+
+.stat-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+}
+.c-total .stat-icon { background: #EEF0F6; }
+.c-todo .stat-icon { background: var(--blue-bg); }
+.c-wip .stat-icon { background: var(--amber-bg); }
+.c-done .stat-icon { background: var(--green-bg); }
+
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.c-total .stat-num { color: var(--slate); }
+.c-todo .stat-num { color: var(--blue); }
+.c-wip .stat-num { color: var(--amber); }
+.c-done .stat-num { color: var(--green); }
+
+.stat-label { font-size: 0.78rem; font-weight: 600; color: var(--slate-mid); letter-spacing: 0.03em; }
+.stat-sub { font-size: 0.72rem; color: var(--muted); margin-top: 3px; font-weight: 400; }
+
+/* Progress */
+.prog-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 24px 28px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+  animation: riseUp 0.5s 0.08s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+.prog-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.prog-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.prog-pct {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--green);
+  background: var(--green-bg);
+  border: 1px solid rgba(45,140,111,0.2);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.prog-track {
+  height: 10px;
+  background: var(--bg2);
+  border-radius: 5px;
+  overflow: hidden;
+  display: flex;
+  gap: 2px;
+}
+.prog-done { background: var(--green); border-radius: 5px; transition: width 0.7s cubic-bezier(0.22,1,0.36,1); }
+.prog-wip { background: var(--amber); border-radius: 5px; transition: width 0.7s 0.1s cubic-bezier(0.22,1,0.36,1); }
+.prog-todo { background: #DBEAFE; border-radius: 5px; transition: width 0.7s 0.2s cubic-bezier(0.22,1,0.36,1); }
+
+.prog-legend {
+  display: flex;
+  gap: 22px;
+  margin-top: 14px;
+}
+.leg { display: flex; align-items: center; gap: 7px; font-size: 0.76rem; font-weight: 500; color: var(--slate-light); }
+.leg-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+/* Two-column layout */
+.two-col {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+  animation: riseUp 0.5s 0.16s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+.panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.panel-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--slate);
+}
+
+/* Member cards */
+.member-list { display: flex; flex-direction: column; gap: 10px; }
+
+.member-item {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--bg);
+}
+.member-item:hover { border-color: var(--border-strong); background: var(--white); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+.member-item.active { border-color: var(--gold); background: var(--gold-light); }
+
+.member-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--slate-mid), var(--slate));
+  display: grid;
+  place-items: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+  letter-spacing: 0.03em;
+}
+
+.member-name { font-weight: 600; font-size: 0.88rem; color: var(--slate); }
+
+.member-bars {
+  display: flex;
+  gap: 6px;
+}
+.mbar { flex: 1; text-align: center; background: var(--bg2); border-radius: 8px; padding: 7px 4px; }
+.mbar .mn { display: block; font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; line-height: 1; }
+.mbar .ml { display: block; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+.mbar.todo .mn { color: var(--blue); }
+.mbar.wip .mn { color: var(--amber); }
+.mbar.done .mn { color: var(--green); }
+
+/* Service panel */
+.svc-list { display: flex; flex-direction: column; gap: 8px; }
+
+.svc-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.18s;
+  background: var(--bg);
+  gap: 10px;
+}
+.svc-row:hover { background: var(--white); border-color: var(--border-strong); }
+.svc-row.active { background: var(--gold-light); border-color: var(--gold); }
+
+.svc-name {
+  font-family: 'Outfit', monospace;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--slate-mid);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.svc-row.active .svc-name { color: var(--gold); }
+
+.svc-cnt {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+  background: var(--border);
+  padding: 2px 8px;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+
+/* Table */
+.table-wrap {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  animation: riseUp 0.5s 0.22s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 0;
+  margin-bottom: 0;
+}
+
+.table-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.clear-filter {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gold);
+  background: var(--gold-light);
+  border: 1px solid var(--gold-mid);
+  padding: 4px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  display: none;
+  transition: all 0.2s;
+}
+.clear-filter:hover { background: var(--gold-mid); color: #fff; }
+.clear-filter.visible { display: inline-block; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+thead tr { background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+th {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--slate-light);
+  padding: 12px 16px;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s;
+}
+th:hover { color: var(--gold); }
+th.sort-asc::after { content: ' ↑'; }
+th.sort-desc::after { content: ' ↓'; }
+
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--bg); }
+
+td {
+  padding: 13px 16px;
+  font-size: 0.87rem;
+  vertical-align: middle;
+  color: var(--slate);
+}
+
+.id-tag {
+  font-family: 'Outfit', monospace;
+  font-size: 0.73rem;
+  font-weight: 600;
+  color: var(--slate-light);
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.story-name { font-weight: 600; font-size: 0.88rem; }
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.status-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+.status-badge.todo { background: var(--blue-bg); color: var(--blue); }
+.status-badge.wip { background: var(--amber-bg); color: var(--amber); }
+.status-badge.wip::before { animation: throb 1.8s ease-in-out infinite; }
+.status-badge.done { background: var(--green-bg); color: var(--green); }
+
+@keyframes throb {
+  0%,100% { opacity:1; }
+  50% { opacity:0.35; }
+}
+
+.svc-chip {
+  font-family: 'Outfit', monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--slate-mid);
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 3px 9px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.notes-col {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.pts-col {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--slate-mid);
+  text-align: center;
+}
+
+.action-btns { display: flex; gap: 4px; align-items: center; }
+
+.btn-edit {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--slate-light);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-edit:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-light); }
+
+.btn-del {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: all 0.15s;
+  line-height: 1;
+}
+.btn-del:hover { color: var(--red); background: #fee2e2; }
+
+.empty-row td {
+  text-align: center;
+  padding: 64px 32px;
+}
+
+.empty-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.empty-icon { font-size: 2.4rem; }
+.empty-msg { font-size: 0.88rem; color: var(--muted); }
+.empty-link { font-size: 0.82rem; color: var(--gold); font-weight: 600; text-decoration: none; }
+.empty-link:hover { text-decoration: underline; }
+
+/* Edit modal */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(30,37,53,0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.overlay.open { display: flex; }
+
+.modal {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  width: 100%;
+  max-width: 520px;
+  padding: 32px;
+  box-shadow: var(--shadow-lg);
+  animation: modalPop 0.28s cubic-bezier(0.22,1,0.36,1);
+}
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.94) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; }
+.modal-x {
+  background: var(--bg2);
+  border: none;
+  color: var(--slate-light);
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  display: grid; place-items: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  line-height: 1;
+}
+.modal-x:hover { background: #fee2e2; color: var(--red); }
+
+.modal .field { margin-bottom: 14px; }
+.modal label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--slate-mid);
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+.modal input, .modal select, .modal textarea {
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  color: var(--slate);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  padding: 10px 13px;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.modal input:focus, .modal select:focus, .modal textarea:focus {
+  border-color: var(--gold);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(201,149,42,0.1);
+}
+.modal textarea { min-height: 70px; resize: vertical; }
+.modal .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.modal-footer { display: flex; gap: 10px; margin-top: 20px; }
+.btn-save {
+  flex: 1; padding: 12px;
+  background: var(--slate); color: #fff;
+  border: none; border-radius: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-save:hover { background: var(--slate-mid); }
+.btn-cancel {
+  padding: 12px 20px;
+  background: var(--bg2); color: var(--slate-light);
+  border: 1px solid var(--border); border-radius: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem; font-weight: 500;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-cancel:hover { color: var(--slate); background: var(--border); }
+
+@media (max-width: 900px) {
+  .two-col { grid-template-columns: 1fr; }
+  .stat-row { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  nav { padding: 0 20px; }
+  .page { padding: 32px 16px 80px; }
+  .page-title { font-size: 1.9rem; }
+  .stat-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .controls { flex-direction: column; align-items: stretch; }
+  th:nth-child(n+5), td:nth-child(n+5) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 18 18"><polygon points="9,2 16,6 16,13 9,17 2,13 2,6"/></svg>
+    </div>
+    <div class="brand-name"> <span>Tracker</span></div>
+  </div>
+  <div class="nav-pills">
+    <a href="tracker-entry.html" class="nav-pill">Log Story</a>
+    <a href="tracker-dashboard.html" class="nav-pill active">Dashboard</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="page-top">
+    <div>
+      <div class="page-eyebrow">
+        <div class="eyebrow-bar"></div>
+        <div class="eyebrow-label">Team Overview</div>
+      </div>
+      <h1 class="page-title">Sprint <em>Dashboard</em></h1>
+    </div>
+    <div class="controls">
+      <input type="text" class="ctrl-input" id="searchInput" placeholder="🔍  Search stories…" style="min-width:200px;" />
+      <select class="ctrl-select" id="filterStatus">
+        <option value="">All Status</option>
+        <option value="todo">To Do</option>
+        <option value="wip">In Progress</option>
+        <option value="done">Done</option>
+      </select>
+      <select class="ctrl-select" id="filterAssignee">
+        <option value="">All Members</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stat-row" id="statRow">
+    <div class="stat-card c-total">
+      <div class="accent-stripe"></div>
+      <div class="stat-icon">📦</div>
+      <div class="stat-num" id="sTotal">0</div>
+      <div class="stat-label">Total Stories</div>
+      <div class="stat-sub" id="sPoints">0 story points</div>
+    </div>
+    <div class="stat-card c-todo">
+      <div class="accent-stripe"></div>
+      <div class="stat-icon">📋</div>
+      <div class="stat-num" id="sTodo">0</div>
+      <div class="stat-label">To Do</div>
+      <div class="stat-sub">In backlog</div>
+    </div>
+    <div class="stat-card c-wip">
+      <div class="accent-stripe"></div>
+      <div class="stat-icon">⚡</div>
+      <div class="stat-num" id="sWip">0</div>
+      <div class="stat-label">In Progress</div>
+      <div class="stat-sub">Active now</div>
+    </div>
+    <div class="stat-card c-done">
+      <div class="accent-stripe"></div>
+      <div class="stat-icon">✅</div>
+      <div class="stat-num" id="sDone">0</div>
+      <div class="stat-label">Done</div>
+      <div class="stat-sub" id="sDonePct">0% complete</div>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="prog-card">
+    <div class="prog-top">
+      <div class="prog-label">Sprint Progress</div>
+      <div class="prog-pct" id="progPct">0% complete</div>
+    </div>
+    <div class="prog-track">
+      <div class="prog-done" id="barDone" style="width:0%"></div>
+      <div class="prog-wip" id="barWip" style="width:0%"></div>
+      <div class="prog-todo" id="barTodo" style="width:0%"></div>
+    </div>
+    <div class="prog-legend">
+      <div class="leg"><div class="leg-dot" style="background:var(--green)"></div>Done</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--amber)"></div>In Progress</div>
+      <div class="leg"><div class="leg-dot" style="background:#BFDBFE)"></div>To Do</div>
+    </div>
+  </div>
+
+  <!-- Two column: Members + Services -->
+  <div class="two-col">
+    <div class="panel">
+      <div class="panel-title">Team Members</div>
+      <div class="member-list" id="memberList">
+        <div style="font-size:0.82rem;color:var(--muted);">No members yet.</div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Microservices</div>
+      <div class="svc-list" id="svcList">
+        <div style="font-size:0.82rem;color:var(--muted);">No microservices logged.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <div class="table-header">
+      <div class="table-title" id="tableTitle">All Stories</div>
+      <button class="clear-filter" id="clearBtn" onclick="clearFilters()">✕ Clear filters</button>
+    </div>
+    <table id="mainTable">
+      <thead>
+        <tr>
+          <th onclick="doSort('storyId')">ID</th>
+          <th onclick="doSort('storyTitle')">Story</th>
+          <th onclick="doSort('assignee')">Assignee</th>
+          <th onclick="doSort('status')">Status</th>
+          <th onclick="doSort('microservice')">Microservice</th>
+          <th onclick="doSort('sprint')">Sprint</th>
+          <th onclick="doSort('points')" style="text-align:center;">Pts</th>
+          <th>Notes</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- Edit Modal -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-top">
+      <div class="modal-title">Edit Story</div>
+      <button class="modal-x" onclick="closeModal()">×</button>
+    </div>
+    <div class="field">
+      <label>Story Title</label>
+      <input id="e_title" type="text" />
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>Story ID</label>
+        <input id="e_id" type="text" />
+      </div>
+      <div class="field">
+        <label>Sprint</label>
+        <input id="e_sprint" type="text" />
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>Assignee</label>
+        <input id="e_assignee" type="text" />
+      </div>
+      <div class="field">
+        <label>Microservice</label>
+        <input id="e_svc" type="text" />
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>Status</label>
+        <select id="e_status">
+          <option value="todo">To Do</option>
+          <option value="wip">In Progress</option>
+          <option value="done">Done</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Points</label>
+        <input id="e_pts" type="number" />
+      </div>
+    </div>
+    <div class="field">
+      <label>Notes</label>
+      <textarea id="e_notes"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+//  SUPABASE CONFIG — replace with your values
+//  Project Settings → API in your Supabase dashboard
+// ─────────────────────────────────────────────
+const SUPABASE_URL  = 'https://ngiqnwuoecrdnvoogjsc.supabase.co';
+const SUPABASE_ANON = 'sb_publishable_Gd2MlGuFOJNEz_gLejUiGA_M8aSejSs';
+const TABLE = 'stories';
+
+// ─── Supabase REST helpers ───────────────────
+const H = {
+  'apikey': SUPABASE_ANON,
+  'Authorization': `Bearer ${SUPABASE_ANON}`,
+  'Content-Type': 'application/json',
+  'Prefer': 'return=representation'
+};
+
+async function dbGetAll() {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?order=created_at.desc`, { headers: H });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+async function dbUpdate(id, patch) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${id}`, {
+    method: 'PATCH', headers: H, body: JSON.stringify(patch)
+  });
+  if (!res.ok) throw new Error(await res.text());
+}
+
+async function dbDelete(id) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${id}`, {
+    method: 'DELETE', headers: H
+  });
+  if (!res.ok) throw new Error(await res.text());
+}
+
+// ─── State ───────────────────────────────────
+let allStories = [];
+let sortKey = 'created_at', sortDir = 'desc', editId = null, activeSvc = null;
+const STATUS_LABEL = { todo: 'To Do', wip: 'In Progress', done: 'Done' };
+
+// ─── Data fetch ──────────────────────────────
+async function loadAll() {
+  try {
+    allStories = await dbGetAll();
+  } catch(e) {
+    console.error('Supabase load error:', e);
+    showBanner('⚠ Could not connect to database. Check your Supabase config in the HTML file.');
+    return;
+  }
+  renderAll();
+}
+
+function showBanner(msg) {
+  let b = document.getElementById('errBanner');
+  if (!b) {
+    b = document.createElement('div');
+    b.id = 'errBanner';
+    b.style.cssText = 'background:#fee2e2;color:#dc2626;font-size:0.82rem;font-weight:500;padding:10px 24px;text-align:center;border-bottom:1px solid #fca5a5;position:sticky;top:66px;z-index:99;';
+    document.querySelector('nav').insertAdjacentElement('afterend', b);
+  }
+  b.textContent = msg;
+}
+
+// ─── Filtered / sorted view ──────────────────
+function filtered() {
+  const q  = document.getElementById('searchInput').value.toLowerCase();
+  const st = document.getElementById('filterStatus').value;
+  const as = document.getElementById('filterAssignee').value;
+  let stories = [...allStories];
+  if (q)  stories = stories.filter(s =>
+    [s.story_title,s.story_id,s.assignee,s.microservice,s.notes].some(v=>(v||'').toLowerCase().includes(q))
+  );
+  if (st) stories = stories.filter(s=>s.status===st);
+  if (as) stories = stories.filter(s=>s.assignee===as);
+  if (activeSvc) stories = stories.filter(s=>s.microservice===activeSvc);
+  const colMap = { storyId:'story_id', storyTitle:'story_title', createdAt:'created_at' };
+  const sk = colMap[sortKey]||sortKey;
+  stories.sort((a,b)=>{
+    let av=a[sk]||'', bv=b[sk]||'';
+    if (sk==='points'){av=+av||0;bv=+bv||0;}
+    if (av<bv) return sortDir==='asc'?-1:1;
+    if (av>bv) return sortDir==='asc'?1:-1;
+    return 0;
+  });
+  return stories;
+}
+
+// ─── Stats ───────────────────────────────────
+function updateStats() {
+  const all=allStories, tot=all.length;
+  const todo=all.filter(s=>s.status==='todo').length;
+  const wip=all.filter(s=>s.status==='wip').length;
+  const done=all.filter(s=>s.status==='done').length;
+  const pts=all.reduce((a,s)=>a+(+s.points||0),0);
+  const pct=tot?Math.round(done/tot*100):0;
+  document.getElementById('sTotal').textContent=tot;
+  document.getElementById('sTodo').textContent=todo;
+  document.getElementById('sWip').textContent=wip;
+  document.getElementById('sDone').textContent=done;
+  document.getElementById('sPoints').textContent=`${pts} story points`;
+  document.getElementById('sDonePct').textContent=`${pct}% complete`;
+  document.getElementById('progPct').textContent=`${pct}% complete`;
+  document.getElementById('barDone').style.width=(tot?(done/tot*100).toFixed(1):0)+'%';
+  document.getElementById('barWip').style.width=(tot?(wip/tot*100).toFixed(1):0)+'%';
+  document.getElementById('barTodo').style.width=(tot?(todo/tot*100).toFixed(1):0)+'%';
+}
+
+// ─── Members ─────────────────────────────────
+function updateMembers() {
+  const map={};
+  allStories.forEach(s=>{
+    if(!s.assignee)return;
+    if(!map[s.assignee])map[s.assignee]={todo:0,wip:0,done:0};
+    map[s.assignee][s.status]++;
+  });
+  const sel=document.getElementById('filterAssignee');
+  const cur=Array.from(sel.options).map(o=>o.value);
+  Object.keys(map).forEach(n=>{
+    if(!cur.includes(n)){const o=document.createElement('option');o.value=n;o.textContent=n;sel.appendChild(o);}
+  });
+  const el=document.getElementById('memberList');
+  if(!Object.keys(map).length){el.innerHTML='<div style="font-size:0.82rem;color:var(--muted);">No members yet.</div>';return;}
+  const activeAs=document.getElementById('filterAssignee').value;
+  el.innerHTML=Object.entries(map).map(([name,c])=>`
+    <div class="member-item ${activeAs===name?'active':''}" onclick="filterMember('${name}')">
+      <div class="member-head">
+        <div class="avatar">${name.slice(0,2).toUpperCase()}</div>
+        <div class="member-name">${name}</div>
+      </div>
+      <div class="member-bars">
+        <div class="mbar todo"><span class="mn">${c.todo}</span><span class="ml">Todo</span></div>
+        <div class="mbar wip"><span class="mn">${c.wip}</span><span class="ml">WIP</span></div>
+        <div class="mbar done"><span class="mn">${c.done}</span><span class="ml">Done</span></div>
+      </div>
+    </div>`).join('');
+}
+
+function filterMember(name){
+  const sel=document.getElementById('filterAssignee');
+  sel.value=sel.value===name?'':name;
+  renderAll();
+}
+
+// ─── Services ────────────────────────────────
+function updateServices(){
+  const map={};
+  allStories.forEach(s=>{if(s.microservice)map[s.microservice]=(map[s.microservice]||0)+1;});
+  const el=document.getElementById('svcList');
+  if(!Object.keys(map).length){el.innerHTML='<div style="font-size:0.82rem;color:var(--muted);">No microservices logged.</div>';return;}
+  el.innerHTML=`
+    <div class="svc-row ${!activeSvc?'active':''}" onclick="setSvc(null)">
+      <span class="svc-name">All services</span><span class="svc-cnt">${allStories.length}</span>
+    </div>
+    ${Object.entries(map).sort((a,b)=>b[1]-a[1]).map(([svc,cnt])=>`
+      <div class="svc-row ${activeSvc===svc?'active':''}" onclick="setSvc('${svc}')">
+        <span class="svc-name">${svc}</span><span class="svc-cnt">${cnt}</span>
+      </div>`).join('')}`;
+}
+
+function setSvc(svc){activeSvc=svc;renderAll();}
+
+// ─── Table ───────────────────────────────────
+function updateTable(){
+  const stories=filtered();
+  const hasFilter=document.getElementById('filterStatus').value||
+    document.getElementById('filterAssignee').value||
+    document.getElementById('searchInput').value||activeSvc;
+  document.getElementById('clearBtn').classList.toggle('visible',!!hasFilter);
+  document.getElementById('tableTitle').textContent=
+    `${stories.length} ${stories.length===1?'Story':'Stories'}${activeSvc?` — ${activeSvc}`:''}`;
+  const tbody=document.getElementById('tbody');
+  if(!stories.length){
+    tbody.innerHTML=`<tr class="empty-row"><td colspan="9">
+      <div class="empty-inner">
+        <div class="empty-icon">📋</div>
+        <div class="empty-msg">No stories match your filters.</div>
+        <a class="empty-link" href="tracker-entry.html">Log a story →</a>
+      </div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML=stories.map(s=>`
+    <tr>
+      <td>${s.story_id?`<span class="id-tag">${s.story_id}</span>`:'<span style="color:var(--muted)">—</span>'}</td>
+      <td><span class="story-name">${s.story_title}</span></td>
+      <td style="font-weight:500;font-size:0.85rem;">${s.assignee}</td>
+      <td><span class="status-badge ${s.status}">${STATUS_LABEL[s.status]}</span></td>
+      <td>${s.microservice?`<span class="svc-chip">${s.microservice}</span>`:'<span style="color:var(--muted)">—</span>'}</td>
+      <td style="font-size:0.8rem;color:var(--slate-light);">${s.sprint||'—'}</td>
+      <td class="pts-col">${s.points||'—'}</td>
+      <td class="notes-col" title="${s.notes||''}">${s.notes||'—'}</td>
+      <td>
+        <div class="action-btns">
+          <button class="btn-edit" onclick="openEdit('${s.id}')">Edit</button>
+          <button class="btn-del" onclick="delStory('${s.id}')">×</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+function clearFilters(){
+  document.getElementById('searchInput').value='';
+  document.getElementById('filterStatus').value='';
+  document.getElementById('filterAssignee').value='';
+  activeSvc=null;
+  renderAll();
+}
+
+function doSort(key){
+  if(sortKey===key)sortDir=sortDir==='asc'?'desc':'asc';
+  else{sortKey=key;sortDir='asc';}
+  document.querySelectorAll('th').forEach(th=>th.className='');
+  if(event.target.tagName==='TH')event.target.classList.add(`sort-${sortDir}`);
+  updateTable();
+}
+
+// ─── Delete ──────────────────────────────────
+async function delStory(id){
+  if(!confirm('Remove this story?'))return;
+  try{
+    await dbDelete(id);
+    allStories=allStories.filter(s=>s.id!==id);
+    renderAll();
+  }catch(e){alert('Failed to delete. Try again.');}
+}
+
+// ─── Edit modal ──────────────────────────────
+function openEdit(id){
+  const s=allStories.find(s=>s.id===id);
+  if(!s)return;
+  editId=id;
+  document.getElementById('e_title').value=s.story_title||'';
+  document.getElementById('e_id').value=s.story_id||'';
+  document.getElementById('e_sprint').value=s.sprint||'';
+  document.getElementById('e_assignee').value=s.assignee||'';
+  document.getElementById('e_svc').value=s.microservice||'';
+  document.getElementById('e_status').value=s.status||'todo';
+  document.getElementById('e_pts').value=s.points||'';
+  document.getElementById('e_notes').value=s.notes||'';
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closeModal(){document.getElementById('overlay').classList.remove('open');editId=null;}
+
+async function saveEdit(){
+  const patch={
+    story_title: document.getElementById('e_title').value.trim(),
+    story_id:    document.getElementById('e_id').value.trim()||null,
+    sprint:      document.getElementById('e_sprint').value.trim()||null,
+    assignee:    document.getElementById('e_assignee').value.trim(),
+    microservice:document.getElementById('e_svc').value.trim()||null,
+    status:      document.getElementById('e_status').value,
+    points:      parseInt(document.getElementById('e_pts').value)||null,
+    notes:       document.getElementById('e_notes').value.trim()||null,
+  };
+  const btn=document.querySelector('.btn-save');
+  btn.textContent='Saving…';btn.disabled=true;
+  try{
+    await dbUpdate(editId,patch);
+    const i=allStories.findIndex(s=>s.id===editId);
+    if(i!==-1)allStories[i]={...allStories[i],...patch};
+    closeModal();renderAll();
+  }catch(e){alert('Failed to save.');}
+  finally{btn.textContent='Save Changes';btn.disabled=false;}
+}
+
+document.getElementById('overlay').addEventListener('click',e=>{
+  if(e.target===document.getElementById('overlay'))closeModal();
+});
+['searchInput','filterStatus','filterAssignee'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',()=>renderAll());
+  document.getElementById(id).addEventListener('change',()=>renderAll());
+});
+
+function renderAll(){updateStats();updateMembers();updateServices();updateTable();}
+
+// ─── Init + auto-refresh every 30s ───────────
+loadAll();
+setInterval(loadAll, 30000);
+</script>
+</body>
+</html>
