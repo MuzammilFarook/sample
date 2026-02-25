@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tracker — Log Story</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #FAF8F5;
+  --bg2: #F3F0EB;
+  --white: #FFFFFF;
+  --border: #E8E2D9;
+  --border-strong: #D4CCC0;
+  --gold: #C9952A;
+  --gold-light: #F5E9CC;
+  --gold-mid: #E8C96A;
+  --slate: #1E2535;
+  --slate-mid: #3D4760;
+  --slate-light: #6B7491;
+  --muted: #9CA3AF;
+  --green: #2D8C6F;
+  --green-bg: #EDFAF4;
+  --amber: #D97706;
+  --amber-bg: #FEF8EC;
+  --blue: #3B5BDB;
+  --blue-bg: #EEF2FF;
+  --shadow-sm: 0 1px 4px rgba(30,37,53,0.07), 0 1px 2px rgba(30,37,53,0.04);
+  --shadow: 0 4px 20px rgba(30,37,53,0.08), 0 2px 6px rgba(30,37,53,0.04);
+  --shadow-lg: 0 16px 48px rgba(30,37,53,0.13), 0 4px 14px rgba(30,37,53,0.07);
+}
+
+body {
+  background: var(--bg);
+  color: var(--slate);
+  font-family: 'Outfit', sans-serif;
+  min-height: 100vh;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(30,37,53,0.055) 1px, transparent 1px);
+  background-size: 26px 26px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(250,248,245,0.94);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  height: 66px;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.brand-mark {
+  width: 34px; height: 34px;
+  background: var(--slate);
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 2px 8px rgba(30,37,53,0.2);
+}
+
+.brand-mark svg { width: 18px; height: 18px; fill: none; stroke: var(--gold-mid); stroke-width: 1.5; }
+
+.brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--slate);
+}
+.brand-name span { color: var(--gold); }
+
+.nav-pills { display: flex; gap: 4px; }
+
+.nav-pill {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--slate-light);
+  text-decoration: none;
+  padding: 7px 18px;
+  border-radius: 8px;
+  transition: all 0.18s;
+  letter-spacing: 0.01em;
+}
+.nav-pill:hover { background: var(--bg2); color: var(--slate); }
+.nav-pill.active { background: var(--slate); color: #fff; box-shadow: 0 2px 8px rgba(30,37,53,0.25); }
+
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 60px 24px 100px;
+}
+
+.page-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.eyebrow-bar {
+  width: 28px; height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-mid));
+  border-radius: 2px;
+}
+.eyebrow-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.page-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  font-weight: 600;
+  color: var(--slate);
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  margin-bottom: 8px;
+}
+.page-title em { font-style: italic; color: var(--gold); }
+
+.page-sub {
+  font-size: 0.9rem;
+  color: var(--slate-light);
+  font-weight: 400;
+  margin-bottom: 48px;
+  line-height: 1.5;
+}
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow-sm);
+  animation: riseUp 0.45s cubic-bezier(0.22,1,0.36,1) both;
+}
+.card:nth-child(2) { animation-delay: 0.06s; }
+.card:nth-child(3) { animation-delay: 0.12s; }
+.card:nth-child(4) { animation-delay: 0.18s; }
+
+@keyframes riseUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 22px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.step-badge {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--gold-light);
+  border: 1.5px solid var(--gold-mid);
+  display: grid;
+  place-items: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.card-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--slate-mid);
+}
+
+.grid { display: grid; gap: 18px; }
+.grid.two { grid-template-columns: 1fr 1fr; }
+
+.field { display: flex; flex-direction: column; gap: 7px; }
+
+.field label {
+  font-size: 0.77rem;
+  font-weight: 600;
+  color: var(--slate-mid);
+  letter-spacing: 0.02em;
+}
+
+input, select, textarea {
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  color: var(--slate);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  padding: 11px 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  width: 100%;
+}
+input::placeholder, textarea::placeholder { color: var(--muted); }
+input:focus, select:focus, textarea:focus {
+  border-color: var(--gold);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(201,149,42,0.1);
+}
+textarea { resize: vertical; min-height: 90px; line-height: 1.65; }
+select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7491' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+
+/* Status picker */
+.status-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.status-opt { position: relative; cursor: pointer; display: block; }
+.status-opt input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+.status-tile {
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 10px 14px;
+  text-align: center;
+  transition: all 0.2s;
+  background: var(--bg);
+  user-select: none;
+}
+.status-tile:hover { border-color: var(--border-strong); background: var(--white); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+
+.st-icon { font-size: 1.5rem; display: block; margin-bottom: 7px; }
+.st-label { font-size: 0.77rem; font-weight: 600; color: var(--slate-light); display: block; }
+
+.status-opt input:checked ~ .status-tile { transform: translateY(-1px); box-shadow: var(--shadow); }
+.status-opt input:checked ~ .status-tile.s-todo { border-color: var(--blue); background: var(--blue-bg); }
+.status-opt input:checked ~ .status-tile.s-todo .st-label { color: var(--blue); }
+.status-opt input:checked ~ .status-tile.s-wip { border-color: var(--amber); background: var(--amber-bg); }
+.status-opt input:checked ~ .status-tile.s-wip .st-label { color: var(--amber); }
+.status-opt input:checked ~ .status-tile.s-done { border-color: var(--green); background: var(--green-bg); }
+.status-opt input:checked ~ .status-tile.s-done .st-label { color: var(--green); }
+
+.btn-add {
+  width: 100%;
+  padding: 15px 24px;
+  background: var(--slate);
+  color: #fff;
+  border: none;
+  border-radius: 13px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 6px;
+  box-shadow: var(--shadow);
+  transition: all 0.22s;
+}
+.btn-add:hover { background: #2a3347; transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+.btn-add:active { transform: translateY(0); }
+.btn-add .circle { width: 24px; height: 24px; background: rgba(255,255,255,0.13); border-radius: 50%; display: grid; place-items: center; font-size: 1.1rem; line-height: 1; }
+
+/* Recent */
+.recents { margin-top: 48px; }
+
+.recents-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.recents-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--slate);
+}
+
+.pill {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--slate-light);
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.entry-list { display: flex; flex-direction: column; gap: 8px; }
+
+.entry {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: 10px 1fr auto auto;
+  align-items: center;
+  gap: 14px;
+  transition: box-shadow 0.2s, border-color 0.2s;
+  animation: riseUp 0.3s ease;
+}
+.entry:hover { box-shadow: var(--shadow-sm); border-color: var(--border-strong); }
+
+.dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.dot.todo { background: var(--blue); }
+.dot.wip { background: var(--amber); box-shadow: 0 0 5px rgba(217,119,6,0.5); animation: throb 1.8s ease-in-out infinite; }
+.dot.done { background: var(--green); }
+
+@keyframes throb {
+  0%,100% { box-shadow: 0 0 4px rgba(217,119,6,0.5); }
+  50% { box-shadow: 0 0 10px rgba(217,119,6,0.8); }
+}
+
+.entry-body { min-width: 0; }
+.e-title { font-weight: 600; font-size: 0.88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.e-meta { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+
+.who-chip {
+  font-size: 0.73rem;
+  font-weight: 600;
+  color: var(--slate-mid);
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.del-btn {
+  background: none; border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 4px 6px;
+  border-radius: 6px;
+  line-height: 1;
+  transition: color 0.2s, background 0.2s;
+}
+.del-btn:hover { color: #dc2626; background: #fee2e2; }
+
+.empty {
+  text-align: center;
+  padding: 36px;
+  border: 1.5px dashed var(--border-strong);
+  border-radius: 16px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--slate);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 12px 24px;
+  border-radius: 30px;
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.t-check { color: #4ade80; font-size: 0.95rem; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 20px; }
+  .page { padding: 36px 16px 80px; }
+  .page-title { font-size: 2rem; }
+  .card { padding: 22px 18px; }
+  .grid.two { grid-template-columns: 1fr; }
+  .status-row { grid-template-columns: 1fr; }
+  .entry { grid-template-columns: 10px 1fr auto; }
+  .who-chip { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 18 18"><polygon points="9,2 16,6 16,13 9,17 2,13 2,6"/></svg>
+    </div>
+    <div class="brand-name"><span>Tracker</span></div>
+  </div>
+  <div class="nav-pills">
+    <a href="tracker-entry.html" class="nav-pill active">Log Story</a>
+    <a href="tracker-dashboard.html" class="nav-pill">Dashboard</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="page-eyebrow">
+    <div class="eyebrow-bar"></div>
+    <div class="eyebrow-label">Story Entry</div>
+  </div>
+  <h1 class="page-title">Log a <em>User Story</em></h1>
+  <p class="page-sub">Track work across your team — stories, services, and progress all in one place.</p>
+
+  <form id="form">
+
+    <div class="card">
+      <div class="card-head">
+        <div class="step-badge">1</div>
+        <div class="card-title">Story Details</div>
+      </div>
+      <div class="grid" style="margin-bottom:18px;">
+        <div class="field">
+          <label>Story Title *</label>
+          <input id="storyTitle" type="text" placeholder="e.g. Attach security to account application" required />
+        </div>
+      </div>
+      <div class="grid two">
+        <div class="field">
+          <label>Story ID / Ticket</label>
+          <input id="storyId" type="text" placeholder="e.g. US-204" />
+        </div>
+        <div class="field">
+          <label>Sprint / Epic</label>
+          <input id="sprint" type="text" placeholder="e.g. Sprint 12" />
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="step-badge">2</div>
+        <div class="card-title">Assignment & Microservice</div>
+      </div>
+      <div class="grid two">
+        <div class="field">
+          <label>Assigned To *</label>
+          <input id="assignee" type="text" placeholder="Developer name" required />
+        </div>
+        <div class="field">
+          <label>Microservice</label>
+          <input id="microservice" type="text" placeholder="e.g. security-mgmt-service" />
+        </div>
+        <div class="field">
+          <label>Story Points</label>
+          <input id="points" type="number" placeholder="e.g. 5" min="1" max="100" />
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="step-badge">3</div>
+        <div class="card-title">Status</div>
+      </div>
+      <div class="status-row">
+        <label class="status-opt">
+          <input type="radio" name="status" value="todo" required />
+          <div class="status-tile s-todo">
+            <span class="st-icon">📋</span>
+            <span class="st-label">To Do</span>
+          </div>
+        </label>
+        <label class="status-opt">
+          <input type="radio" name="status" value="wip" />
+          <div class="status-tile s-wip">
+            <span class="st-icon">⚡</span>
+            <span class="st-label">In Progress</span>
+          </div>
+        </label>
+        <label class="status-opt">
+          <input type="radio" name="status" value="done" />
+          <div class="status-tile s-done">
+            <span class="st-icon">✅</span>
+            <span class="st-label">Done</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="step-badge">4</div>
+        <div class="card-title">Notes & Context</div>
+      </div>
+      <div class="field">
+        <label>Notes / Blockers / PR Links</label>
+        <textarea id="notes" placeholder="Add blockers, PR links, technical notes, or context the team should know…"></textarea>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-add">
+      <span class="circle">+</span>
+      Add Story Entry
+    </button>
+
+  </form>
+
+  <div class="recents">
+    <div class="recents-header">
+      <div class="recents-title">Recent Entries</div>
+      <div class="pill" id="countPill">0 stories</div>
+    </div>
+    <div class="entry-list" id="entryList"></div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast">
+  <span class="t-check">✓</span>
+  <span id="toastMsg">Story saved</span>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+//  SUPABASE CONFIG — replace with your values
+//  Project Settings → API in your Supabase dashboard
+// ─────────────────────────────────────────────
+const SUPABASE_URL  = 'https://ngiqnwuoecrdnvoogjsc.supabase.co';
+const SUPABASE_ANON = 'sb_publishable_Gd2MlGuFOJNEz_gLejUiGA_M8aSejSs';
+const TABLE = 'stories';
+
+// ─── Supabase REST helpers ───────────────────
+const headers = {
+  'apikey': SUPABASE_ANON,
+  'Authorization': `Bearer ${SUPABASE_ANON}`,
+  'Content-Type': 'application/json',
+  'Prefer': 'return=representation'
+};
+
+async function dbGetAll() {
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/${TABLE}?order=created_at.desc&limit=8`,
+    { headers }
+  );
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+async function dbInsert(story) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}`, {
+    method: 'POST', headers,
+    body: JSON.stringify(story)
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+async function dbDelete(id) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?id=eq.${id}`, {
+    method: 'DELETE', headers
+  });
+  if (!res.ok) throw new Error(await res.text());
+}
+
+// ─── UI helpers ─────────────────────────────
+function showToast(msg, isError = false) {
+  document.getElementById('toastMsg').textContent = msg;
+  const t = document.getElementById('toast');
+  t.style.background = isError ? '#DC2626' : '';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function setLoading(on) {
+  const btn = document.querySelector('.btn-add');
+  btn.disabled = on;
+  btn.innerHTML = on
+    ? '<span class="circle" style="animation:spin 0.8s linear infinite">↻</span> Saving…'
+    : '<span class="circle">+</span> Add Story Entry';
+}
+
+// ─── Render recent entries ───────────────────
+function renderStories(stories) {
+  document.getElementById('countPill').textContent =
+    `${stories.length} recent ${stories.length===1?'story':'stories'}`;
+  const el = document.getElementById('entryList');
+  if (!stories.length) {
+    el.innerHTML = '<div class="empty">No stories yet.<br>Fill in the form above to log your first one.</div>';
+    return;
+  }
+  el.innerHTML = stories.map(s => `
+    <div class="entry">
+      <div class="dot ${s.status}"></div>
+      <div class="entry-body">
+        <div class="e-title">${s.story_id?`[${s.story_id}] `:''}${s.story_title}</div>
+        ${s.microservice||s.sprint?`<div class="e-meta">${[s.microservice,s.sprint].filter(Boolean).join(' · ')}</div>`:''}
+      </div>
+      <div class="who-chip">${s.assignee}</div>
+      <button class="del-btn" onclick="del('${s.id}')" title="Remove">×</button>
+    </div>
+  `).join('');
+}
+
+async function loadRecent() {
+  try {
+    const stories = await dbGetAll();
+    renderStories(stories);
+  } catch(e) {
+    document.getElementById('entryList').innerHTML =
+      '<div class="empty" style="color:#DC2626">⚠ Could not load stories. Check your Supabase config.</div>';
+  }
+}
+
+async function del(id) {
+  try {
+    await dbDelete(id);
+    showToast('Entry removed');
+    loadRecent();
+  } catch(e) {
+    showToast('Failed to delete', true);
+  }
+}
+
+// ─── Form submit ─────────────────────────────
+document.getElementById('form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const status = document.querySelector('input[name="status"]:checked')?.value;
+  if (!status) { alert('Please select a status.'); return; }
+
+  const story = {
+    story_id:    document.getElementById('storyId').value.trim() || null,
+    story_title: document.getElementById('storyTitle').value.trim(),
+    microservice:document.getElementById('microservice').value.trim() || null,
+    sprint:      document.getElementById('sprint').value.trim() || null,
+    assignee:    document.getElementById('assignee').value.trim(),
+    points:      parseInt(document.getElementById('points').value) || null,
+    status,
+    notes:       document.getElementById('notes').value.trim() || null,
+  };
+
+  setLoading(true);
+  try {
+    await dbInsert(story);
+    this.reset();
+    showToast('✓ Story saved successfully');
+    loadRecent();
+  } catch(e) {
+    showToast('Failed to save. Check console.', true);
+    console.error(e);
+  } finally {
+    setLoading(false);
+  }
+});
+
+// ─── Init ────────────────────────────────────
+loadRecent();
+</script>
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</body>
+</html>
